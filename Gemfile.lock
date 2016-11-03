@@ -74,4 +74,8 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
+<<<<<<< HEAD
    1.13.1
+=======
+   1.13.5
+>>>>>>> First commit on developing routes for API

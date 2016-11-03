@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 config/app.yml
 spec/fixtures/cassettes/*
+=======
+config/app.yml
+>>>>>>> First commit on developing routes for API

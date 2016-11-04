@@ -27,7 +27,7 @@ describe 'Dev Routes' do
       get "api/v0.1/dev/#{SAD_USERNAME}"
 
       last_response.status.must_equal 404
-      last_response.body.must_include SAD_FB_GROUP_ID
+      last_response.body.must_include SAD_USERNAME
     end
   end
 

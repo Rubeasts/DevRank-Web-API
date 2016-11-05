@@ -2,8 +2,8 @@
 require_relative 'spec_helper'
 
 describe 'Dev Routes' do
-  HAPPY_USERNAME = 'rjollet'
-  SAD_USERNAME = '12547'
+  HAPPY_USERNAME = 'rjollet'.freeze
+  SAD_USERNAME = '12547'.freeze
 
   before do
     VCR.insert_cassette DEV_CASSETTE, record: :new_episodes

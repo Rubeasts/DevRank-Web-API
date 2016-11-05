@@ -15,9 +15,9 @@ def app
   DevRankAPI
 end
 
-FIXTURES_FOLDER = 'spec/fixtures'
-CASSETTES_FOLDER = "#{FIXTURES_FOLDER}/cassettes"
-DEV_CASSETTE = 'dev'
+FIXTURES_FOLDER = 'spec/fixtures'.freeze
+CASSETTES_FOLDER = "#{FIXTURES_FOLDER}/cassettes".freeze
+DEV_CASSETTE = 'dev'.freeze
 
 VCR.configure do |c|
   c.cassette_library_dir = CASSETTES_FOLDER

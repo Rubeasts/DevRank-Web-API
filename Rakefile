@@ -18,13 +18,13 @@ task :wipe do
 end
 
 namespace :quality do
-  CODE = 'app.rb'
+  CODE = 'app.rb'.freeze
 
   desc 'run all quality checks'
   task all: [:rubocop, :flog, :flay]
 
   task :flog do
-    sh 'flog'
+    sh 'flog ./'
   end
 
   task :flay do

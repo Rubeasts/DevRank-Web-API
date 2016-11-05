@@ -15,7 +15,9 @@ end
 group :test do
   gem 'minitest'
   gem 'minitest-rg'
-
+  gem 'rubocop'
+  gem 'flog'
+  gem 'flay'
   gem 'rack-test'
   gem 'rake'
 

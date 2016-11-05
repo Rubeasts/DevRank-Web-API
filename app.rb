@@ -34,9 +34,12 @@ class DevRankAPI < Sinatra::Base
     developer_id = params[:username]
     begin
       dev = Github::Developer.find(username: developer_id)
-
-      content_type 'application/json'
-      { repos: dev.repos}.to_json
+      unless dev.nil?
+        content_type 'application/json'
+        { repos: dev.repos}.to_json
+      else
+        halt 404, "Cannot find Username: #{developer_id} repos"
+      end
     rescue
       halt 404, "Cannot find Username: #{developer_id} repos"
     end

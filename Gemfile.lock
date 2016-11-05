@@ -9,7 +9,7 @@ GEM
     domain_name (0.5.20161021)
       unf (>= 0.0.5, < 1.0.0)
     econfig (2.0.0)
-    gitget (0.1.0)
+    gitget (0.1.1)
       http (~> 2.0)
     hashdiff (0.3.0)
     http (2.0.3)
@@ -74,4 +74,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.13.1
+   1.13.6

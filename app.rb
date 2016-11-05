@@ -2,6 +2,7 @@
 require 'sinatra'
 require 'gitget'
 require 'econfig'
+require 'json/ext'
 
 # DevRankAPI web service
 class DevRankAPI < Sinatra::Base

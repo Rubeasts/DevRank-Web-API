@@ -36,7 +36,7 @@ class DevRankAPI < Sinatra::Base
     developer_id = params[:username]
     begin
       dev = Github::Developer.find(username: developer_id)
-      if unless dev.nil?
+      unless dev.nil?
         content_type 'application/json'
         { repos: dev.repos }.to_json
       else

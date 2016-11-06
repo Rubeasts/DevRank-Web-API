@@ -9,3 +9,7 @@ branches:
 script: bundle exec rake spec
 gemfile:
   - Gemfile
+env:
+- GH_USERNAME=username
+- GH_TOKEN=token
+

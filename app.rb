@@ -2,6 +2,7 @@
 require 'sinatra'
 require 'gitget'
 require 'econfig'
+require 'json/ext'
 
 # DevRankAPI web service
 class DevRankAPI < Sinatra::Base
@@ -35,7 +36,7 @@ class DevRankAPI < Sinatra::Base
     developer_id = params[:username]
     begin
       dev = Github::Developer.find(username: developer_id)
-      if !dev.nil?
+      unless dev.nil?
         content_type 'application/json'
         { repos: dev.repos }.to_json
       else

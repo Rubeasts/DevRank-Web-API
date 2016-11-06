@@ -1,6 +1,11 @@
 # https://github.com/settings/tokens
 # you can find authg in fixtures/cassettes/github_api.yml
 ---
-:username: 'XXX'
-:token: 'XXX'
-:auth: 'Basic xxxxxxxxx'
+development:
+  GH_USERNAME: 'XXX'
+  GH_TOKEN: 'XXX'
+  GH_AUTH: 'Basic XXX'
+test:
+  GH_USERNAME: 'XXX'
+  GH_TOKEN: 'XXX'
+  GH_AUTH: 'Basic XXX'

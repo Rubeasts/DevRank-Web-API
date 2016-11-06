@@ -9,8 +9,9 @@ class DevRankAPI < Sinatra::Base
 
   Econfig.env = settings.environment.to_s
   Econfig.root = settings.root
-  Github::API.config = { username: ENV['GH_USERNAME'],
-                         token:    ENV['GH_TOKEN'] }
+
+  Github::API.config = { username: config.GH_USERNAME,
+                         token:    config.GH_TOKEN }
 
   API_VER = 'api/v0.1'.freeze
 

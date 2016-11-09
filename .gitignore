@@ -1,2 +1,4 @@
 config/app.yml
 spec/fixtures/cassettes/*
+*bundle/
+Gemfile.lock

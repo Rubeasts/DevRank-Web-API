@@ -3,6 +3,8 @@ require 'sinatra'
 require 'gitget'
 require 'econfig'
 
+require_relative 'config/environment'
+
 # DevRankAPI web service
 class DevRankAPI < Sinatra::Base
   extend Econfig::Shortcut

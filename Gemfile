@@ -7,6 +7,7 @@ gem 'sinatra'
 gem 'puma'
 gem 'json'
 gem 'econfig'
+gem 'rake'
 
 gem 'gitget'
 gem 'sequel'
@@ -27,7 +28,6 @@ group :test do
   gem 'minitest-rg'
 
   gem 'rack-test'
-  gem 'rake'
 
   gem 'vcr'
   gem 'webmock'

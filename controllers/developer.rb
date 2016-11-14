@@ -1,26 +1,7 @@
 # frozen_string_literal: true
-require 'sinatra'
-require 'gitget'
-require 'econfig'
 
-require_relative 'config/environment'
-
-# DevRankAPI web service
+# configure based on environment
 class DevRankAPI < Sinatra::Base
-  extend Econfig::Shortcut
-
-  Econfig.env = settings.environment.to_s
-  Econfig.root = settings.root
-
-  Github::API.config = { username: config.GH_USERNAME,
-                         token:    config.GH_TOKEN }
-
-  API_VER = 'api/v0.1'.freeze
-
-  get '/?' do
-    "RankDev latest version endpoints are at: /#{API_VER}/"
-  end
-
   get "/#{API_VER}/dev/:username/?" do
     developer_id = params[:username]
     begin

@@ -15,9 +15,10 @@ def app
   DevRankAPI
 end
 
-FIXTURES_FOLDER = 'spec/fixtures'.freeze
-CASSETTES_FOLDER = "#{FIXTURES_FOLDER}/cassettes".freeze
-DEV_CASSETTE = 'dev'.freeze
+FIXTURES_FOLDER = 'spec/fixtures'
+CASSETTES_FOLDER = "#{FIXTURES_FOLDER}/cassettes"
+DEV_CASSETTE = 'dev'
+REPO_CASSETTE = 'repo'
 
 VCR.configure do |c|
   c.cassette_library_dir = CASSETTES_FOLDER
@@ -25,3 +26,6 @@ VCR.configure do |c|
 
   c.filter_sensitive_data('<AUTH>') { ENV['GH_AUTH'] }
 end
+
+HAPPY_USERNAME = 'rjollet'
+SAD_USERNAME = '12547'

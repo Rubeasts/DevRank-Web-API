@@ -2,8 +2,6 @@
 require_relative 'spec_helper'
 
 describe 'Dev Routes' do
-  HAPPY_USERNAME = 'rjollet'.freeze
-  SAD_USERNAME = '12547'.freeze
 
   before do
     VCR.insert_cassette DEV_CASSETTE, record: :new_episodes
@@ -46,6 +44,45 @@ describe 'Dev Routes' do
 
       last_response.status.must_equal 404
       last_response.body.must_include SAD_USERNAME
+    end
+  end
+
+  describe 'Loading and saving a new developer by username' do
+    before do
+      DB[:developers].delete
+      DB[:repositories].delete
+    end
+
+    it '(HAPPY) should load and save a new developers by its name' do
+      post 'api/v0.1/dev',
+           {name:  HAPPY_USERNAME}.to_json,
+           'CONTENT_TYPE' => 'application/json'
+
+      last_response.status.must_equal 200
+      body = JSON.parse(last_response.body)
+      body.must_include 'name'
+
+      Developer.count.must_equal 1
+      Repository.count.must_be :>=, 10
+    end
+
+    it '(BAD) should report error if given invalid URL' do
+      post 'api/v0.1/dev',
+           { name: SAD_USERNAME }.to_json,
+           'CONTENT_TYPE' => 'application/json'
+
+      last_response.status.must_equal 400
+      last_response.body.must_include SAD_USERNAME
+    end
+
+    it 'should report error if group already exists' do
+      2.times do
+        post 'api/v0.1/dev',
+             {name:  HAPPY_USERNAME}.to_json,
+             'CONTENT_TYPE' => 'application/json'
+      end
+
+      last_response.status.must_equal 422
     end
   end
 end

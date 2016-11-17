@@ -9,7 +9,7 @@ Sequel.migration do
       String    :github_id
       String    :full_name
       TrueClass :is_private
-      DateTime  :create_at
+      DateTime  :created_at
       DateTime  :pushed_at
       Fixnum    :size
       Fixnum    :stargazers_count

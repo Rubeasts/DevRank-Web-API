@@ -1,5 +1,5 @@
 config/app.yml
 spec/fixtures/cassettes/*
-*bundle/
+.bundle/
 db/*.*
 Gemfile.lock

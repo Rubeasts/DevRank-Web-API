@@ -13,7 +13,7 @@ end
 namespace :db do
   task :_setup do
     require 'sequel'
-    require_relative 'config/environment'
+    require_relative 'init'
     Sequel.extension :migration
   end
 

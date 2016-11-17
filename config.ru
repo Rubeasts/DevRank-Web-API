@@ -1,2 +1,3 @@
-require './app.rb'
+# frozen_string_literal: true
+require './init.rb'
 run DevRankAPI

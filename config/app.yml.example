@@ -5,6 +5,7 @@ development:
   GH_USERNAME: 'XXX'
   GH_TOKEN: 'XXX'
   GH_AUTH: 'Basic XXX'
+
 test:
   GH_USERNAME: 'XXX'
   GH_TOKEN: 'XXX'

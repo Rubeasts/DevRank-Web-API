@@ -11,14 +11,22 @@ describe 'Dev Routes' do
     VCR.eject_cassette
   end
 
-  describe 'Find developer by its github username' do
+  describe 'Find store developer by its github username' do
+    before do
+      DB[:developers].delete
+      DB[:repositories].delete
+      post 'api/v0.1/dev',
+           { name: HAPPY_USERNAME }.to_json,
+           'CONTENT_TYPE' => 'application/json'
+    end
+
     it 'HAPPY: should find a developer given a correct username' do
       get "api/v0.1/dev/#{HAPPY_USERNAME}"
 
       last_response.status.must_equal 200
       last_response.content_type.must_equal 'application/json'
       dev_data = JSON.parse(last_response.body)
-      dev_data['username'].must_equal HAPPY_USERNAME
+      dev_data['name'].must_equal HAPPY_USERNAME
     end
 
     it 'SAD: should report if a developer is not found' do

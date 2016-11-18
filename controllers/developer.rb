@@ -8,7 +8,7 @@ class DevRankAPI < Sinatra::Base
       dev = Developer.find(name: developer_name)
 
       content_type 'application/json'
-      { id: dev.id, github_id: dev.github_id, name: dev.name }.to_json
+      DeveloperRepresenter.new(dev).to_json
     rescue
       halt 404, "Github Username: #{developer_name} not found"
     end

@@ -10,7 +10,9 @@ class DevRankAPI < Sinatra::Base
       content_type 'application/json'
       DeveloperRepresenter.new(dev).to_json
     rescue
-      halt 404, "Github Username: #{developer_name} not found"
+      error = Error.new(:not_found, "Github Username: #{developer_name} not found")
+      HttpErrorResponder.new(error).to_response
+#      halt 404, "Github Username: #{developer_name} not found"
     end
   end
 
@@ -21,15 +23,23 @@ class DevRankAPI < Sinatra::Base
       developer_name = body_params['name']
 
       if Developer.find(name: developer_name)
-        halt 422, "Developer (name: #{developer_name}) already exists"
+        error = Error.new(:cannot_process, "Developer (name: #{developer_name}) already exists")
+        HttpErrorResponder.new(error).to_response
+#        halt 422, "Developer (name: #{developer_name}) already exists"
       end
 
       github_dev = Github::Developer.find(username: developer_name)
+      unless github_dev
+        error = Error.new(:not_found, "Developer (name: #{developer_name}) could not be found")
+        HttpErrorResponder.new(error).to_response
+      end
+#      halt 404, "Developer (name: #{developer_name}) could not be found" unless github_dev
 
-      halt 404, "Developer (name: #{developer_name}) could not be found" unless github_dev
     rescue
       content_type 'text/plain'
-      halt 404, "Developer (name: #{developer_name}) could not be found"
+      error = Error.new(:not_found, "Developer (name: #{developer_name}) could not be found")
+      HttpErrorResponder.new(error).to_response
+#      halt 404, "Developer (name: #{developer_name}) could not be found"
     end
 
     begin
@@ -58,7 +68,9 @@ class DevRankAPI < Sinatra::Base
       { id: developer.id, name: developer.name }.to_json
     rescue
       content_type 'text/plain'
-      halt 500, "Cannot load developer (id: #{developer_name})"
+      error = Error.new(:cannot_load, "Cannot load developer (id: #{developer_name})")
+      HttpErrorResponder.new(error).to_response
+#      halt 500, "Cannot load developer (id: #{developer_name})"
     end
   end
 end

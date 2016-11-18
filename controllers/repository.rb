@@ -8,11 +8,7 @@ class DevRankAPI < Sinatra::Base
       dev = Developer.find(name: developer_name)
       if !dev.nil?
         content_type 'application/json'
-        DeveloperRepositoriesRepresenter.new(dev.repositories).to_json
-#        repos = dev.repositories.map do |repo|
-#          RepositoryRepresenter.new(repo).to_json
-#        end
-#        { repositories: repos }.to_json
+        DeveloperRepositoriesRepresenter.new(dev).to_json
       else
         halt 404, "Cannot find Username: #{developer_name} repos"
       end

@@ -54,6 +54,8 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    representable (2.3.0)
+      uber (~> 0.0.7)
     rerun (0.11.0)
       listen (~> 3.0)
     ripl (0.7.1)
@@ -64,6 +66,8 @@ GEM
       rack (>= 1.0)
       rack-test (~> 0.6.2)
       ripl (>= 0.7.0)
+    roar (1.0.4)
+      representable (>= 2.0.1, < 2.4.0)
     ruby_dep (1.5.0)
     ruby_parser (3.8.3)
       sexp_processor (~> 4.1)
@@ -81,6 +85,7 @@ GEM
       ripl-multi_line (>= 0.2.4)
       ripl-rack (>= 0.2.0)
       sinatra (>= 1.2.1)
+    uber (0.0.15)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
@@ -107,6 +112,7 @@ DEPENDENCIES
   rack-test
   rake
   rerun
+  roar
   sequel
   sinatra
   sqlite3

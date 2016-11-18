@@ -12,6 +12,8 @@ gem 'rake'
 gem 'gitget'
 gem 'sequel'
 
+gem 'roar'
+
 group :development, :test do
   gem 'sqlite3'
 end

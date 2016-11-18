@@ -9,19 +9,7 @@ class DevRankAPI < Sinatra::Base
       if !dev.nil?
         content_type 'application/json'
         repos = dev.repositories.map do |repo|
-          {
-            id: repo.id,
-            github_id: repo.github_id,
-            full_name: repo.full_name,
-            is_private: repo.is_private,
-            created_at: repo.created_at,
-            pushed_at: repo.pushed_at,
-            size: repo.size,
-            stargazers_count: repo.stargazers_count,
-            watchers_count: repo.watchers_count,
-            forks_count: repo.forks_count,
-            open_issues_count: repo.open_issues_count
-          }.to_json
+          RepositoryRepresenter.new(repo).to_json
         end
         { repositories: repos }.to_json
       else

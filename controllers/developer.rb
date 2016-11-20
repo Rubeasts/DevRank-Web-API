@@ -3,15 +3,13 @@
 # configure based on environment
 class DevRankAPI < Sinatra::Base
   get "/#{API_VER}/dev/:username/?" do
-    developer_name = params[:username]
-    begin
-      dev = Developer.find(name: developer_name)
+    result = FindDeveloper.call(params[:username])
 
+    if result.success?
       content_type 'application/json'
-      DeveloperRepresenter.new(dev).to_json
-    rescue
-      error = Error.new(:not_found, "Github Username: #{developer_name} not found")
-      return ErrorRepresenter.new(error).to_status_response
+      DeveloperRepresenter.new(result.value).to_json
+    else
+      ErrorRepresenter.new(result.value).to_status_response
     end
   end
 

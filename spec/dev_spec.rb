@@ -65,7 +65,7 @@ describe 'Dev Routes' do
       last_response.body.must_include SAD_USERNAME
     end
 
-    it 'should report error if group already exists' do
+    it 'should report error if developer already exists' do
       2.times do
         post 'api/v0.1/dev',
              {name:  HAPPY_USERNAME}.to_json,

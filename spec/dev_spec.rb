@@ -33,7 +33,7 @@ describe 'Dev Routes' do
       get "api/v0.1/dev/#{SAD_USERNAME}"
 
       last_response.status.must_equal 404
-      last_response.body.must_include SAD_USERNAME
+      last_response.body.must_include 'not found'
     end
   end
 
@@ -56,7 +56,7 @@ describe 'Dev Routes' do
       Repository.count.must_be :>=, 10
     end
 
-    it '(BAD) should report error if given invalid URL' do
+    it '(BAD) should report error if given invalid name' do
       post 'api/v0.1/dev',
            { name: SAD_USERNAME }.to_json,
            'CONTENT_TYPE' => 'application/json'

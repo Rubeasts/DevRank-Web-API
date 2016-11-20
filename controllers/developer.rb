@@ -15,54 +15,14 @@ class DevRankAPI < Sinatra::Base
 
   # Body args (JSON) e.g.: {"name": "githubusername"}
   post "/#{API_VER}/dev/?" do
-    begin
-      body_params = JSON.parse request.body.read
-      developer_name = body_params['name']
+    result = LoadDeveloperFromGithub.call(request.body.read)
 
-      if Developer.find(name: developer_name)
-        error = Error.new(:cannot_process, "Developer (name: #{developer_name}) already exists")
-        return ErrorRepresenter.new(error).to_status_response
-      end
-
-      github_dev = Github::Developer.find(username: developer_name)
-      unless github_dev
-        error = Error.new(:not_found, "Developer (name: #{developer_name}) could not be found")
-        return ErrorRepresenter.new(error).to_status_response
-      end
-    rescue
-      content_type 'text/plain'
-      error = Error.new(:not_found, "Developer (name: #{developer_name}) could not be found")
-      return ErrorRepresenter.new(error).to_status_response
-    end
-
-    begin
-      developer = Developer.create(
-        github_id: github_dev.id,
-        name: github_dev.name)
-
-      github_dev.repos.each do |repo|
-        Repository.create(
-          developer_id: developer.id,
-          github_id: repo.id,
-          full_name: repo.full_name,
-          is_private: repo.is_private,
-          created_at: repo.created_at,
-          pushed_at: repo.pushed_at,
-          size: repo.size,
-          stargazers_count: repo.stargazers_count,
-          watchers_count: repo.watchers_count,
-          forks_count: repo.forks_count,
-          open_issues_count: repo.open_issues_count
-        )
-      end
-
+    if result.success?
       content_type 'application/json'
       status 202
-      { id: developer.id, name: developer.name }.to_json
-    rescue
-      content_type 'text/plain'
-      error = Error.new(:cannot_load, "Cannot load developer (id: #{developer_name})")
-      return ErrorRepresenter.new(error).to_status_response
+      DeveloperRepresenter.new(result.value).to_json
+    else
+      ErrorRepresenter.new(result.value).to_status_response
     end
   end
 end

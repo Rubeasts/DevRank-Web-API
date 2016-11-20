@@ -7,7 +7,6 @@ class FindDeveloper
   extend Dry::Monads::Either::Mixin
 
   def self.call(params)
-    puts params
     developer = Developer.find(name: params)
     if developer
       Right(developer)

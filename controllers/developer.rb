@@ -11,8 +11,7 @@ class DevRankAPI < Sinatra::Base
       DeveloperRepresenter.new(dev).to_json
     rescue
       error = Error.new(:not_found, "Github Username: #{developer_name} not found")
-      HttpErrorResponder.new(error).to_response
-#      halt 404, "Github Username: #{developer_name} not found"
+      return ErrorRepresenter.new(error).to_status_response
     end
   end
 
@@ -24,22 +23,18 @@ class DevRankAPI < Sinatra::Base
 
       if Developer.find(name: developer_name)
         error = Error.new(:cannot_process, "Developer (name: #{developer_name}) already exists")
-        HttpErrorResponder.new(error).to_response
-#        halt 422, "Developer (name: #{developer_name}) already exists"
+        return ErrorRepresenter.new(error).to_status_response
       end
 
       github_dev = Github::Developer.find(username: developer_name)
       unless github_dev
         error = Error.new(:not_found, "Developer (name: #{developer_name}) could not be found")
-        HttpErrorResponder.new(error).to_response
+        return ErrorRepresenter.new(error).to_status_response
       end
-#      halt 404, "Developer (name: #{developer_name}) could not be found" unless github_dev
-
     rescue
       content_type 'text/plain'
       error = Error.new(:not_found, "Developer (name: #{developer_name}) could not be found")
-      HttpErrorResponder.new(error).to_response
-#      halt 404, "Developer (name: #{developer_name}) could not be found"
+      return ErrorRepresenter.new(error).to_status_response
     end
 
     begin
@@ -69,8 +64,7 @@ class DevRankAPI < Sinatra::Base
     rescue
       content_type 'text/plain'
       error = Error.new(:cannot_load, "Cannot load developer (id: #{developer_name})")
-      HttpErrorResponder.new(error).to_response
-#      halt 500, "Cannot load developer (id: #{developer_name})"
+      return ErrorRepresenter.new(error).to_status_response
     end
   end
 end

@@ -11,13 +11,11 @@ class DevRankAPI < Sinatra::Base
         DeveloperRepositoriesRepresenter.new(dev).to_json
       else
         error = Error.new(:not_found, "Cannot find Username: #{developer_name} repos")
-        HttpErrorResponder.new(error).to_response
-#        halt 404, "Cannot find Username: #{developer_name} repos"
+        return ErrorRepresenter.new(error).to_status_response
       end
     rescue
       error = Error.new(:not_found, "Cannot find Username: #{developer_name} repos")
-      HttpErrorResponder.new(error).to_response
-#      halt 404, "Cannot find Username: #{developer_name} repos"
+      return ErrorRepresenter.new(error).to_status_response
     end
   end
 end

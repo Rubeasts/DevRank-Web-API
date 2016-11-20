@@ -24,7 +24,7 @@ VCR.configure do |c|
   c.cassette_library_dir = CASSETTES_FOLDER
   c.hook_into :webmock
 
-  c.filter_sensitive_data('<AUTH>') { ENV['GH_AUTH']}
+  c.filter_sensitive_data('<AUTH>') { app.config.GH_AUTH }
 end
 
 HAPPY_USERNAME = 'rjollet'

@@ -18,6 +18,8 @@ gem 'dry-monads'
 gem 'dry-container'
 gem 'dry-transaction'
 
+gem 'slim'
+
 group :development, :test do
   gem 'sqlite3'
 end

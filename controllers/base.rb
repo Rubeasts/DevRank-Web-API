@@ -11,6 +11,13 @@ class DevRankAPI < Sinatra::Base
                             token:    config.GH_TOKEN)
 
   API_VER = 'api/v0.1'.freeze
+  
+  set :views, File.expand_path('../../views',__FILE__)
+  set :public_dir, File.expand7('../../public',__FILE__)
+
+  after do
+    content_type 'text/html'
+  end
 
   get '/?' do
     "RankDev latest version endpoints are at: /#{API_VER}/"

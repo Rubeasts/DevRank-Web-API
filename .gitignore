@@ -2,3 +2,4 @@ config/app.yml
 spec/fixtures/cassettes/*
 .bundle/
 db/*.*
+.rake_tasks~

@@ -6,5 +6,5 @@ class DeveloperRepresenter < Roar::Decorator
 
   property :id
   property :github_id
-  property :name
+  property :username
 end

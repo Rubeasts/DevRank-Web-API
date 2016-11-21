@@ -8,7 +8,7 @@ describe 'Repository Routes' do
     DB[:developers].delete
     DB[:repositories].delete
     post 'api/v0.1/dev',
-         { name: HAPPY_USERNAME}.to_json,
+         { username: HAPPY_USERNAME}.to_json,
          'CONTENT_TYPE' => 'application/json'
   end
 
@@ -18,7 +18,7 @@ describe 'Repository Routes' do
 
   describe 'Get all repositories of a developer' do
     it '(HAPPY) should find all repositories with valid group ID' do
-      get "api/v0.1/dev/#{Developer.first.name}/repos"
+      get "api/v0.1/dev/#{Developer.first.username}/repos"
       last_response.status.must_equal 200
       last_response.content_type.must_equal 'application/json'
       repositories = JSON.parse(last_response.body)

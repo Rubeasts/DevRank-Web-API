@@ -6,7 +6,7 @@ Sequel.migration do
       primary_key :id
 
       String :github_id
-      String :name
+      String :username
     end
   end
 end

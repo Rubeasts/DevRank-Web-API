@@ -7,33 +7,33 @@ class LoadDeveloperFromGithub
 
   register :validate_request_json, lambda { |request_body|
     begin
-      name_representation = NameRequestRepresenter.new(NameRequest.new)
+      name_representation = UsernameRequestRepresenter.new(UsernameRequest.new)
       Right(name_representation.from_json(request_body))
     rescue
-      Left(Error.new(:bad_request, 'URL could not be resolved'))
+      Left(Error.new(:bad_request, 'username could not be resolved'))
     end
   }
 
-  register :validate_request_name, lambda { |body_params|
-    if (developer_name = body_params['name']).nil?
-      Left(:cannot_process, 'URL not supplied')
+  register :validate_request_username, lambda { |body_params|
+    if (dev_username = body_params['username']).nil?
+      Left(Error.new(:cannot_process, 'username not supplied'))
     else
-      Right(developer_name)
+      Right(dev_username)
     end
   }
 
-  register :check_if_developer_is_loaded, lambda { |developer_name|
-    if Developer.find(name: developer_name)
-      Left(Error.new(:cannot_process, "Developer (name: #{developer_name}) already exists"))
+  register :check_if_developer_is_loaded, lambda { |dev_username|
+    if Developer.find(username: dev_username)
+      Left(Error.new(:cannot_process, "Developer (name: #{dev_username}) already exists"))
     else
-      Right(developer_name)
+      Right(dev_username)
     end
   }
 
-  register :check_if_developer_exist, lambda { |developer_name|
-    github_dev = Github::Developer.find(username: developer_name)
+  register :check_if_developer_exist, lambda { |dev_username|
+    github_dev = Github::Developer.find(username: dev_username)
     unless github_dev
-      Left(Error.new(:not_found, "Developer (name: #{developer_name}) could not be found"))
+      Left(Error.new(:not_found, "Developer (name: #{dev_username}) could not be found"))
     else
       Right(github_dev)
     end
@@ -42,7 +42,7 @@ class LoadDeveloperFromGithub
   register :create_developer_and_repositories, lambda { |github_developer|
     developer = Developer.create(
       github_id: github_developer.id,
-      name: github_developer.name)
+      username: github_developer.username)
 
     github_developer.repos.each do |gh_repo|
       write_developer_repository(developer, gh_repo)
@@ -53,7 +53,7 @@ class LoadDeveloperFromGithub
   def self.call(params)
     Dry.Transaction(container: self) do
       step :validate_request_json
-      step :validate_request_name
+      step :validate_request_username
       step :check_if_developer_is_loaded
       step :check_if_developer_exist
       step :create_developer_and_repositories

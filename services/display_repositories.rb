@@ -7,19 +7,19 @@ class DisplayRepositories
 
   register :validate_params, lambda { |params|
     begin
-      developer_name = params['username']
-      Right(developer_name)
+      dev_username = params['username']
+      Right(dev_username)
     rescue
-      Left(Error.new(:not_found, "Cannot find Username: #{developer_name} repos"))
+      Left(Error.new(:not_found, "Cannot find Username: #{dev_username} repos"))
     end
   }
 
-  register :display_repositories, lambda { |developer_name|
-    dev = Developer.find(name: developer_name)
+  register :display_repositories, lambda { |dev_username|
+    dev = Developer.find(username: dev_username)
     if dev
       Right(dev)
     else
-      Left(Error.new(:not_found, "Cannot find Username: #{developer_name} repos"))
+      Left(Error.new(:not_found, "Cannot find Username: #{dev_username} repos"))
     end
   }
 

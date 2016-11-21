@@ -16,7 +16,7 @@ describe 'Dev Routes' do
       DB[:developers].delete
       DB[:repositories].delete
       post 'api/v0.1/dev',
-           { name: HAPPY_USERNAME }.to_json,
+           { username: HAPPY_USERNAME }.to_json,
            'CONTENT_TYPE' => 'application/json'
     end
 
@@ -26,7 +26,7 @@ describe 'Dev Routes' do
       last_response.status.must_equal 200
       last_response.content_type.must_equal 'application/json'
       dev_data = JSON.parse(last_response.body)
-      dev_data['name'].must_equal HAPPY_USERNAME
+      dev_data['username'].must_equal HAPPY_USERNAME
     end
 
     it 'SAD: should report if a developer is not found' do
@@ -45,12 +45,12 @@ describe 'Dev Routes' do
 
     it '(HAPPY) should load and save a new developers by its name' do
       post 'api/v0.1/dev',
-           {name:  HAPPY_USERNAME}.to_json,
+           {username:  HAPPY_USERNAME}.to_json,
            'CONTENT_TYPE' => 'application/json'
 
       last_response.status.must_equal 202
       body = JSON.parse(last_response.body)
-      body.must_include 'name'
+      body.must_include 'username'
 
       Developer.count.must_equal 1
       Repository.count.must_be :>=, 10
@@ -58,7 +58,7 @@ describe 'Dev Routes' do
 
     it '(BAD) should report error if given invalid name' do
       post 'api/v0.1/dev',
-           { name: SAD_USERNAME }.to_json,
+           { username: SAD_USERNAME }.to_json,
            'CONTENT_TYPE' => 'application/json'
 
       last_response.status.must_equal 404
@@ -68,7 +68,7 @@ describe 'Dev Routes' do
     it 'should report error if developer already exists' do
       2.times do
         post 'api/v0.1/dev',
-             {name:  HAPPY_USERNAME}.to_json,
+             {username:  HAPPY_USERNAME}.to_json,
              'CONTENT_TYPE' => 'application/json'
       end
 

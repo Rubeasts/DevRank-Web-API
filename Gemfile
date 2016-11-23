@@ -25,6 +25,7 @@ end
 group :development do
   gem 'rerun'
 
+  gem 'rubocop'
   gem 'flog'
   gem 'flay'
 end

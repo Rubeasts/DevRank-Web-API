@@ -10,7 +10,7 @@ class DevRankAPI < Sinatra::Base
   Github::API.config.update(username: config.GH_USERNAME,
                             token:    config.GH_TOKEN)
 
-  API_VER = 'api/v0.1'.freeze
+  API_VER = 'api/v0.1'
 
   get '/?' do
     "RankDev latest version endpoints are at: /#{API_VER}/"

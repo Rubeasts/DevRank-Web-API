@@ -3,7 +3,7 @@
 # configure based on environment
 class DevRankAPI < Sinatra::Base
   get "/#{API_VER}/dev/:username/?" do
-    result = FindDeveloper.call(params[:username])
+    result = LoadDeveloper.call(params[:username])
 
     if result.success?
       content_type 'application/json'
@@ -13,13 +13,12 @@ class DevRankAPI < Sinatra::Base
     end
   end
 
-  # Body args (JSON) e.g.: {"name": "githubusername"}
-  post "/#{API_VER}/dev/?" do
-    result = LoadDeveloperFromGithub.call(request.body.read)
+  put "/#{API_VER}/dev/:username/?" do
+    result = UpdateDeveloper.call(params[:username])
 
     if result.success?
       content_type 'application/json'
-      status 202
+      status 204
       DeveloperRepresenter.new(result.value).to_json
     else
       ErrorRepresenter.new(result.value).to_status_response

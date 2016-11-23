@@ -5,37 +5,13 @@ class LoadDeveloperFromGithub
   extend Dry::Monads::Either::Mixin
   extend Dry::Container::Mixin
 
-  register :validate_request_json, lambda { |request_body|
-    begin
-      name_representation = UsernameRequestRepresenter.new(UsernameRequest.new)
-      Right(name_representation.from_json(request_body))
-    rescue
-      Left(Error.new(:bad_request, 'username could not be resolved'))
-    end
-  }
-
-  register :validate_request_username, lambda { |body_params|
-    if (dev_username = body_params['username']).nil?
-      Left(Error.new(:cannot_process, 'username not supplied'))
-    else
-      Right(dev_username)
-    end
-  }
-
-  register :check_if_developer_is_loaded, lambda { |dev_username|
-    if Developer.find(username: dev_username)
-      Left(Error.new(:cannot_process, "Developer (name: #{dev_username}) already exists"))
-    else
-      Right(dev_username)
-    end
-  }
-
   register :check_if_developer_exist, lambda { |dev_username|
     github_dev = Github::Developer.find(username: dev_username)
-    unless github_dev
-      Left(Error.new(:not_found, "Developer (name: #{dev_username}) could not be found"))
+    if github_dev
+      Right github_dev
     else
-      Right(github_dev)
+      Left Error.new  :not_found,
+                      "Developer (username: #{dev_username}) could not be found"
     end
   }
 
@@ -45,16 +21,13 @@ class LoadDeveloperFromGithub
       username: github_developer.username)
 
     github_developer.repos.each do |gh_repo|
-      write_developer_repository(developer, gh_repo)
+      write_developer_repository developer, gh_repo
     end
-    Right(developer)
+    Right developer
   }
 
   def self.call(params)
     Dry.Transaction(container: self) do
-      step :validate_request_json
-      step :validate_request_username
-      step :check_if_developer_is_loaded
       step :check_if_developer_exist
       step :create_developer_and_repositories
     end.call(params)

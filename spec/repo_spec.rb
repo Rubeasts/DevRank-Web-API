@@ -7,9 +7,7 @@ describe 'Repository Routes' do
 
     DB[:developers].delete
     DB[:repositories].delete
-    post 'api/v0.1/dev',
-         { username: HAPPY_USERNAME}.to_json,
-         'CONTENT_TYPE' => 'application/json'
+    LoadDeveloper.call(HAPPY_USERNAME)
   end
 
   after do

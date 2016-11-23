@@ -38,10 +38,10 @@ task :wipe do
 end
 
 namespace :quality do
-  CODE = 'app.rb'.freeze
+  CODE = 'app.rb'
 
   desc 'run all quality checks'
-  task all: [:rubocop, :flog, :flay]
+  task all: [:spec, :rubocop, :flog, :flay]
 
   task :flog do
     sh 'flog ./'

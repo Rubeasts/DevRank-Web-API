@@ -15,25 +15,25 @@ describe 'Dev Routes' do
     before do
       DB[:developers].delete
       DB[:repositories].delete
-      post 'api/v0.1/dev',
-           { username: HAPPY_USERNAME }.to_json,
-           'CONTENT_TYPE' => 'application/json'
+      LoadDeveloper.call(HAPPY_USERNAME)
     end
 
-    it 'HAPPY: should find a developer given a correct username' do
+    it 'HAPPY: should find a developer that has been loaded given it username' do
       get "api/v0.1/dev/#{HAPPY_USERNAME}"
 
       last_response.status.must_equal 200
-      last_response.content_type.must_equal 'application/json'
-      dev_data = JSON.parse(last_response.body)
-      dev_data['username'].must_equal HAPPY_USERNAME
+      body = JSON.parse(last_response.body)
+      body.must_include 'username'
+
+      Developer.count.must_equal 1
+      Repository.count.must_be :>=, 10
     end
 
     it 'SAD: should report if a developer is not found' do
       get "api/v0.1/dev/#{SAD_USERNAME}"
 
       last_response.status.must_equal 404
-      last_response.body.must_include 'not found'
+      last_response.body.must_include SAD_USERNAME
     end
   end
 
@@ -44,11 +44,9 @@ describe 'Dev Routes' do
     end
 
     it '(HAPPY) should load and save a new developers by its name' do
-      post 'api/v0.1/dev',
-           {username:  HAPPY_USERNAME}.to_json,
-           'CONTENT_TYPE' => 'application/json'
+      get "api/v0.1/dev/#{HAPPY_USERNAME}"
 
-      last_response.status.must_equal 202
+      last_response.status.must_equal 200
       body = JSON.parse(last_response.body)
       body.must_include 'username'
 
@@ -57,22 +55,37 @@ describe 'Dev Routes' do
     end
 
     it '(BAD) should report error if given invalid name' do
-      post 'api/v0.1/dev',
-           { username: SAD_USERNAME }.to_json,
-           'CONTENT_TYPE' => 'application/json'
+      get "api/v0.1/dev/#{SAD_USERNAME}"
 
       last_response.status.must_equal 404
       last_response.body.must_include SAD_USERNAME
     end
+  end
 
-    it 'should report error if developer already exists' do
-      2.times do
-        post 'api/v0.1/dev',
-             {username:  HAPPY_USERNAME}.to_json,
-             'CONTENT_TYPE' => 'application/json'
-      end
+  describe 'Request to update a developer' do
+    after do
+      DB[:developers].delete
+      DB[:repositories].delete
+      LoadDeveloper.call(HAPPY_USERNAME)
+    end
 
-      last_response.status.must_equal 422
+    it '(HAPPY) should successfully update valid developer' do
+      original = Developer.first
+      modified = Developer.first
+      modified.github_id = nil
+      modified.save
+      put "api/v0.1/dev/#{HAPPY_USERNAME}"
+      last_response.status.must_equal 204
+      updated = Developer.first
+      updated.github_id.must_equal(original.github_id)
+      last_response.body == DeveloperRepresenter.new(original).to_json
+    end
+
+    it '(BAD) should report error if given invalid developer username' do
+      put "api/v0.1/dev/#{SAD_USERNAME}"
+
+      last_response.status.must_equal 404
+      last_response.body.must_include SAD_USERNAME
     end
   end
 end

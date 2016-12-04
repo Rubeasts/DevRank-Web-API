@@ -18,7 +18,15 @@ class LoadDeveloperFromGithub
   register :create_developer_and_repositories, lambda { |github_developer|
     developer = Developer.create(
       github_id: github_developer.id,
-      username: github_developer.username)
+      username: github_developer.username,
+      avatar_url: github_developer.avatar_url,
+      name: github_developer.name,
+      location: github_developer.location,
+      email: github_developer.email,
+      followers: github_developer.followers.count,
+      following: github_developer.following.count,
+      stars: github_developer.starred.count
+    )
 
     github_developer.repos.each do |gh_repo|
       write_developer_repository developer, gh_repo

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require_relative 'repository'
 
 # Roar:Decorator for representing the developer
 class DeveloperRepresenter < Roar::Decorator
@@ -14,4 +15,6 @@ class DeveloperRepresenter < Roar::Decorator
   property :followers
   property :following
   property :stars
+
+  collection :repositories, extend: RepositoryRepresenter, class: Repository
 end

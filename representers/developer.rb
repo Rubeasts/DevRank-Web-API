@@ -7,4 +7,8 @@ class DeveloperRepresenter < Roar::Decorator
   property :id
   property :github_id
   property :username
+  property :avatar_url
+  property :name
+  property :location
+  property :email
 end

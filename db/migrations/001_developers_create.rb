@@ -13,6 +13,7 @@ Sequel.migration do
       String :email
       String :followers
       String :following
+      String :stars
     end
   end
 end

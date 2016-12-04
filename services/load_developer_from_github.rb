@@ -24,7 +24,8 @@ class LoadDeveloperFromGithub
       location: github_developer.location,
       email: github_developer.email,
       followers: github_developer.followers.count,
-      following: github_developer.following.count
+      following: github_developer.following.count,
+      stars: github_developer.starred.count
     )
 
     github_developer.repos.each do |gh_repo|

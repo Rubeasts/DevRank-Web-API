@@ -63,7 +63,7 @@ describe 'Dev Routes' do
   end
 
   describe 'Request to update a developer' do
-    after do
+    before do
       DB[:developers].delete
       DB[:repositories].delete
       LoadDeveloper.call(HAPPY_USERNAME)

@@ -22,7 +22,9 @@ class LoadDeveloperFromGithub
       avatar_url: github_developer.avatar_url,
       name: github_developer.name,
       location: github_developer.location,
-      email: github_developer.email
+      email: github_developer.email,
+      followers: github_developer.followers.count,
+      following: github_developer.following.count
     )
 
     github_developer.repos.each do |gh_repo|

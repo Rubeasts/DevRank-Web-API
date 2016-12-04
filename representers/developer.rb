@@ -11,4 +11,6 @@ class DeveloperRepresenter < Roar::Decorator
   property :name
   property :location
   property :email
+  property :followers
+  property :following
 end

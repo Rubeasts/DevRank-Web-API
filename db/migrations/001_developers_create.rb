@@ -11,6 +11,8 @@ Sequel.migration do
       String :name
       String :location
       String :email
+      String :followers
+      String :following
     end
   end
 end

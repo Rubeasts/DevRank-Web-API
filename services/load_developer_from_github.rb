@@ -30,6 +30,7 @@ class LoadDeveloperFromGithub
 
     github_developer.repos.each do |gh_repo|
       write_developer_repository developer, gh_repo
+      UpdateRepository.call(gh_repo.id)
     end
     Right developer
   }

@@ -1,15 +1,29 @@
-# frozen_string_literal: true
+  # frozen_string_literal: true
 
-# configure based on environment
-class DevRankAPI < Sinatra::Base
-  get "/#{API_VER}/dev/:username/repos/?" do
-    results = DisplayRepositories.call(params)
+  # configure based on environment
+  class DevRankAPI < Sinatra::Base
+    get "/#{API_VER}/dev/:owner/:repository/?" do
+      result = LoadRepository.call(params)
 
-    if results.success?
-      content_type 'application/json'
-      DeveloperRepositoriesRepresenter.new(results.value).to_json
-    else
-      ErrorRepresenter.new(results.value).to_status_response
+      if result.success?
+        content_type 'application/json'
+        RepositoryRepresenter.new(result.value).to_json
+      else
+        ErrorRepresenter.new(result.value).to_status_response
+      end
+    end
+
+    put "/#{API_VER}/dev/:owner/:repository/?" do
+      result = UpdateRepository.call(param)
+
+      if result.success?
+        content_type 'application/json'
+        status 204
+        DeveloperRepresenter.new(result.value).to_json
+      else
+        ErrorRepresenter.new(result.value).to_status_response
+      end
     end
   end
+
 end

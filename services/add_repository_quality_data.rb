@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Loads data from Facebook group to database
-class UpdateRepository
+class UpdateRepositoryQualityData
   extend Dry::Monads::Either::Mixin
   extend Dry::Container::Mixin
 
@@ -19,10 +19,10 @@ class UpdateRepository
     reponame = repo.full_name.split('/').last
     quality_data = GetCloneData.new(devname, reponame)
     if quality_data
-      repo.flog_score = quality_data.get_flog_scores
-      repo.flay_score = quality_data.get_flay_score
-      repo.rubocop_errors = quality_data.get_rubocop_errors
-
+      repo.flog_score = quality_data.get_flog_scores.to_s
+      repo.flay_score = quality_data.get_flay_score.to_s
+      repo.rubocop_errors = quality_data.get_rubocop_errors.to_s
+      repo.save(github_id: repo.github_id)
       Right repo
     else
       Left Error.new  :not_found,

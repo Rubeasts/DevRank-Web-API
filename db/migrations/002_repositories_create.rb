@@ -16,6 +16,9 @@ Sequel.migration do
       Fixnum    :watchers_count
       Fixnum    :forks_count
       Fixnum    :open_issues_count
+      String    :flog_score
+      String    :flay_score
+      String    :rubocop_errors
     end
   end
 end

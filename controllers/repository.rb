@@ -19,7 +19,7 @@
       if result.success?
         content_type 'application/json'
         status 204
-        DeveloperRepresenter.new(result.value).to_json
+        RepositoryRepresenter.new(result.value).to_json
       else
         ErrorRepresenter.new(result.value).to_status_response
       end

@@ -29,3 +29,5 @@ end
 
 HAPPY_USERNAME = 'rjollet'
 SAD_USERNAME = '12547'
+HAPPY_REPO = 'DeepViz'
+SAD_REPO = 'blabla'

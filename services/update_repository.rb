@@ -7,7 +7,7 @@ class UpdateRepository
 
   register :check_if_repository_is_loaded, lambda { |repository|
     if (repo = Repository.find(repository: repository))
-      Right repo
+      Right(repo)
     else
       Left Error.new  :not_found,
                       "Repository (repository: #{repository}) could not be found"

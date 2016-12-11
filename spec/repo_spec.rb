@@ -14,20 +14,20 @@ describe 'Repository Routes' do
     VCR.eject_cassette
   end
 
-  describe 'Get all repositories of a developer' do
-    it '(HAPPY) should find all repositories with valid group ID' do
-      get "api/v0.1/dev/#{Developer.first.username}/repos"
+  describe 'Get a repository of a developer' do
+    it '(HAPPY) should find a repository from an owner and a repository name' do
+      get "api/v0.1/dev/#{Repository.first.full_name}"
       last_response.status.must_equal 200
       last_response.content_type.must_equal 'application/json'
-      repositories = JSON.parse(last_response.body)
-      repositories['repositories'].count.must_be :>=, 5
+      repository = JSON.parse(last_response.body)
     end
 
-    it '(SAD) should report error repositories cannot be found' do
-      get "api/v0.1/dev/#{SAD_USERNAME}/repos"
+    it '(SAD) should report error repositorie cannot be found' do
+      get "api/v0.1/dev/#{SAD_USERNAME}/#{SAD_REPO}"
 
       last_response.status.must_equal 404
       last_response.body.must_include SAD_USERNAME
+      last_response.body.must_include SAD_REPO
     end
   end
 end

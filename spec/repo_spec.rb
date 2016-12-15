@@ -4,10 +4,6 @@ require_relative 'spec_helper'
 describe 'Repository Routes' do
   before do
     VCR.insert_cassette REPO_CASSETTE, record: :new_episodes
-
-    DB[:developers].delete
-    DB[:repositories].delete
-    LoadDeveloper.call(HAPPY_USERNAME)
   end
 
   after do
@@ -15,11 +11,25 @@ describe 'Repository Routes' do
   end
 
   describe 'Get a repository of a developer' do
+    before do
+      DB[:developers].delete
+      DB[:repositories].delete
+    end
+
     it '(HAPPY) should find a repository from an owner and a repository name' do
+      LoadRepository.call(HAPPY_USERNAME + "/" + HAPPY_REPO)
       get "api/v0.1/dev/#{Repository.first.full_name}"
       last_response.status.must_equal 200
       last_response.content_type.must_equal 'application/json'
-      repository = JSON.parse(last_response.body)
+      last_response.body.must_equal(RepositoryRepresenter(Repository.first).to_json)
+    end
+
+    it '(HAPPY) should find a repository (not in the db) from an owner and a repository name' do
+      get "api/v0.1/dev/#{HAPPY_USERNAME}/#{HAPPY_REPO}"
+      last_response.status.must_equal 200
+      last_response.content_type.must_equal 'application/json'
+      last_response.body.must_equal(RepositoryRepresenter(Repository.first).to_json)
+
     end
 
     it '(SAD) should report error repositorie cannot be found' do

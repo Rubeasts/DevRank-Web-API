@@ -29,8 +29,10 @@ class LoadDeveloperFromGithub
     )
 
     github_developer.repos.each do |gh_repo|
-      write_developer_repository developer, gh_repo
-      UpdateRepositoryQualityData.call(gh_repo.id)
+      if gh_repo.language.to_s.include? "Ruby"
+        write_developer_repository developer, gh_repo
+        UpdateRepositoryQualityData.call(gh_repo.id)
+      end
     end
     Right developer
   }
@@ -55,7 +57,8 @@ class LoadDeveloperFromGithub
       stargazers_count: gh_repo.stargazers_count,
       watchers_count: gh_repo.watchers_count,
       forks_count: gh_repo.forks_count,
-      open_issues_count: gh_repo.open_issues_count
+      open_issues_count: gh_repo.open_issues_count,
+      language: gh_repo.language
     )
   end
 end

@@ -18,4 +18,5 @@ class RepositoryRepresenter < Roar::Decorator
   property :flog_score
   property :flay_score
   property :rubocop_errors
+  property :language
 end

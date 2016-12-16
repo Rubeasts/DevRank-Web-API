@@ -29,8 +29,8 @@ class LoadDeveloperFromGithub
     )
 
     github_developer.repos.each do |gh_repo|
+      write_developer_repository developer, gh_repo
       if gh_repo.language.to_s.include? "Ruby"
-        write_developer_repository developer, gh_repo
         UpdateRepositoryQualityData.call(gh_repo.id)
       end
     end

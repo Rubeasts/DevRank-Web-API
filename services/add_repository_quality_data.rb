@@ -16,8 +16,8 @@ class UpdateRepositoryQualityData
 
   register :save_repository_quality_data, lambda { |input|
     begin
-      repo = input['repo']
-      quality_data = input['quality_data']
+      repo = input[:repo]
+      quality_data = input[:quality_data]
       repo.flog_score = quality_data.flog.to_s
       repo.flay_score = quality_data.flay.to_s
       repo.rubocop_errors = quality_data.rubocop.to_s

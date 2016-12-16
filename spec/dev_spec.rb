@@ -47,11 +47,7 @@ describe 'Dev Routes' do
       get "api/v0.1/dev/#{HAPPY_USERNAME}"
 
       last_response.status.must_equal 200
-      body = JSON.parse(last_response.body)
-      body.must_include 'username'
-
-      Developer.count.must_equal 1
-      Repository.count.must_be :>=, 10
+      last_response.body.must_equal DeveloperRepresenter.new(Developer.first).to_json
     end
 
     it '(BAD) should report error if given invalid name' do

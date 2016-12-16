@@ -10,6 +10,8 @@ gem 'econfig'
 gem 'rake'
 
 gem 'gitget'
+gem 'getclonedata'
+
 gem 'sequel'
 
 gem 'roar'

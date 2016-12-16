@@ -31,7 +31,10 @@ class UpdateDeveloper
       dev.update github_id: github_dev.id, username: github_dev.username
       dev.repositories.map(&:delete)
       github_dev.repos.each do |gh_repo|
-        write_developer_repository(dev, gh_repo)
+        write_developer_repository dev, gh_repo
+        if gh_repo.language.to_s.include? "Ruby"
+          UpdateRepositoryQualityData.call(gh_repo)
+        end
       end
       Right(dev)
     rescue
@@ -60,7 +63,9 @@ class UpdateDeveloper
       stargazers_count: gh_repo.stargazers_count,
       watchers_count: gh_repo.watchers_count,
       forks_count: gh_repo.forks_count,
-      open_issues_count: gh_repo.open_issues_count
+      open_issues_count: gh_repo.open_issues_count,
+      language: gh_repo.language,
+      git_url: gh_repo.git_url
     )
   end
 end

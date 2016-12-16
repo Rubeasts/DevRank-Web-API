@@ -5,14 +5,15 @@ GEM
       public_suffix (~> 2.0, >= 2.0.2)
     ast (2.3.0)
     bond (0.5.1)
+    cloc (0.9.0)
     concurrent-ruby (1.0.2)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     domain_name (0.5.20161129)
       unf (>= 0.0.5, < 1.0.0)
-    dry-configurable (0.3.0)
+    dry-configurable (0.4.0)
       concurrent-ruby (~> 1.0)
-    dry-container (0.5.0)
+    dry-container (0.6.0)
       concurrent-ruby (~> 1.0)
       dry-configurable (~> 0.1, >= 0.1.3)
     dry-equalizer (0.2.0)
@@ -36,7 +37,13 @@ GEM
       path_expander (~> 1.0)
       ruby_parser (~> 3.1, > 3.1.0)
       sexp_processor (~> 4.4)
-    gitget (0.4)
+    getclonedata (0.1)
+      cloc (~> 0.9)
+      flay (~> 2.8)
+      flog (~> 4.4)
+      http (~> 2.1)
+      rubocop (~> 0.42)
+    gitget (0.4.2)
       http (~> 2.0)
     hashdiff (0.3.1)
     hirb (0.7.3)
@@ -71,7 +78,7 @@ GEM
     rack-test (0.6.3)
       rack (>= 1.0)
     rainbow (2.1.0)
-    rake (11.3.0)
+    rake (12.0.0)
     rb-fsevent (0.9.8)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
@@ -117,9 +124,9 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
-    unicode-display_width (1.1.1)
+    unicode-display_width (1.1.2)
     vcr (3.0.3)
-    webmock (2.1.0)
+    webmock (2.3.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -135,6 +142,7 @@ DEPENDENCIES
   econfig
   flay
   flog
+  getclonedata
   gitget
   hirb
   json

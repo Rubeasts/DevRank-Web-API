@@ -30,8 +30,14 @@ class LoadDeveloperFromGithub
 
     github_developer.repos.each do |gh_repo|
       write_developer_repository developer, gh_repo
-      if gh_repo.language.to_s.include? "Ruby"
-        UpdateRepositoryQualityData.call(gh_repo)
+    end
+    Right developer
+  }
+
+  register :update_repo_code_quality, lambda { |developer|
+    developer.repositories.each do |repo|
+      if repo.language.to_s.include? "Ruby"
+        UpdateRepositoryQualityData.call(repo)
       end
     end
     Right developer
@@ -41,6 +47,7 @@ class LoadDeveloperFromGithub
     Dry.Transaction(container: self) do
       step :check_if_developer_exist
       step :create_developer_and_repositories
+      step :update_repo_code_quality
     end.call(params)
   end
 

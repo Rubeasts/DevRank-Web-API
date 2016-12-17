@@ -32,9 +32,6 @@ class UpdateDeveloper
       dev.repositories.map(&:delete)
       github_dev.repos.each do |gh_repo|
         write_developer_repository dev, gh_repo
-        if gh_repo.language.to_s.include? "Ruby"
-          UpdateRepositoryQualityData.call(gh_repo)
-        end
       end
       Right(dev)
     rescue
@@ -42,11 +39,21 @@ class UpdateDeveloper
     end
   }
 
+  register :update_repo_code_quality, lambda { |developer|
+    developer.repositories.each do |repo|
+      if repo.language.to_s.include? "Ruby"
+        UpdateRepositoryQualityData.call(repo)
+      end
+    end
+    Right developer
+  }
+
   def self.call(params)
     Dry.Transaction(container: self) do
       step :check_if_developer_is_loaded
       step :load_developer_from_github
       step :update_developer
+      step :update_repo_code_quality
     end.call(params)
   end
 

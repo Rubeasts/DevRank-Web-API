@@ -1,3 +1,5 @@
+require_relative 'init.rb'
+
 developer = Developer.find(username: 'rjollet')
 
 def async_quality_update(developer)

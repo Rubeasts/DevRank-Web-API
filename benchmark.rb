@@ -1,4 +1,5 @@
 require_relative 'init.rb'
+require 'benchmark'
 
 developer = Developer.find(username: 'rjollet')
 
@@ -18,11 +19,13 @@ def quality_update(developer)
   end
 end
 
-Benchmark.measure do
+norm = Benchmark.measure do
   5.times.map { quality_update(developer) }
 end.real
 
-
-Benchmark.measure do
+conc = Benchmark.measure do
   5.times.map { async_quality_update(developer) }
 end.real
+
+puts "Normal = #{norm}"
+puts "Conc = #{conc}"

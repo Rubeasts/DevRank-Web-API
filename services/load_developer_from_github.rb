@@ -34,10 +34,20 @@ class LoadDeveloperFromGithub
     Right developer
   }
 
+  register :update_repo_code_quality, lambda { |developer|
+    developer.repositories.each do |repo|
+      if repo.language.to_s.include? "Ruby"
+        UpdateRepositoryQualityData.call(repo)
+      end
+    end
+    Right developer
+  }
+
   def self.call(params)
     Dry.Transaction(container: self) do
       step :check_if_developer_exist
       step :create_developer_and_repositories
+      step :update_repo_code_quality
     end.call(params)
   end
 
@@ -54,7 +64,9 @@ class LoadDeveloperFromGithub
       stargazers_count: gh_repo.stargazers_count,
       watchers_count: gh_repo.watchers_count,
       forks_count: gh_repo.forks_count,
-      open_issues_count: gh_repo.open_issues_count
+      open_issues_count: gh_repo.open_issues_count,
+      language: gh_repo.language,
+      git_url: gh_repo.git_url
     )
   end
 end

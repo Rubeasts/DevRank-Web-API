@@ -3,3 +3,4 @@ spec/fixtures/cassettes/*
 .bundle/
 db/*.*
 .rake_tasks~
+lib/git_clone_tmp

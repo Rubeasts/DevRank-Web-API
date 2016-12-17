@@ -15,4 +15,9 @@ class RepositoryRepresenter < Roar::Decorator
   property :watchers_count
   property :forks_count
   property :open_issues_count
+  property :git_url
+  property :flog_score
+  property :flay_score
+  property :rubocop_errors
+  property :language
 end

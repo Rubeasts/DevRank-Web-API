@@ -10,6 +10,8 @@ gem 'econfig'
 gem 'rake'
 
 gem 'gitget'
+gem 'getclonedata'
+
 gem 'sequel'
 
 gem 'roar'
@@ -17,6 +19,7 @@ gem 'multi_json'
 gem 'dry-monads'
 gem 'dry-container'
 gem 'dry-transaction'
+gem 'concurrent-ruby'
 
 group :development, :test do
   gem 'sqlite3'

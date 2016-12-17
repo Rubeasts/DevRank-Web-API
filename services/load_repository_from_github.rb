@@ -5,26 +5,18 @@ class LoadRepositoryFromGithub
   extend Dry::Monads::Either::Mixin
   extend Dry::Container::Mixin
 
-  register :check_if_repository_exist, lambda { |repository|
-    github_repo = Github::Repository.find(full_name: repository)
+  register :check_if_repository_exist, lambda { |input|
+    github_repo = Github::Repository.find(owner: input[:owner], repo: input[:repo])
     if github_repo
       Right github_repo
     else
       Left Error.new  :not_found,
-                      "Developer (repository: #{repository}) could not be found"
+                      "Developer (repository: #{input}) could not be found"
     end
   }
 
-  def self.call(params)
-    Dry.Transaction(container: self) do
-      step :check_if_repository_exist
-    end.call(params)
-  end
-
-  private_class_method
-
-  def self.write_developer_repository(developer, gh_repo)
-    developer.add_repository(
+  register :create_repository, lambda { |gh_repo|
+    repository = Repository.create(
       github_id: gh_repo.id,
       full_name: gh_repo.full_name,
       is_private: gh_repo.is_private,
@@ -36,5 +28,15 @@ class LoadRepositoryFromGithub
       forks_count: gh_repo.forks_count,
       open_issues_count: gh_repo.open_issues_count
     )
+
+    Right developer
+  }
+
+  def self.call(params)
+    Dry.Transaction(container: self) do
+      step :check_if_repository_exist
+    end.call(params)
   end
+
+  private_class_method
 end

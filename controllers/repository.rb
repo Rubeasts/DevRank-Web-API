@@ -2,7 +2,8 @@
 
   # configure based on environment
   class DevRankAPI < Sinatra::Base
-    get "/#{API_VER}/dev/:full_name/?" do
+    get "/#{API_VER}/repos/:owner/:repo/?" do
+      puts params[:full_name]
       result = LoadRepository.call(params)
 
       if result.success?
@@ -13,8 +14,8 @@
       end
     end
 
-    put "/#{API_VER}/dev/:full_name/?" do
-      result = UpdateRepository.call(param)
+    put "/#{API_VER}/repos/:owner/:repo/?" do
+      result = UpdateRepository.call(params)
 
       if result.success?
         content_type 'application/json'

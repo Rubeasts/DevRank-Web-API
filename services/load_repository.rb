@@ -6,6 +6,7 @@ class LoadRepository
   extend Dry::Container::Mixin
 
   register :check_owner_repo_exist, lambda { |params|
+
     owner = params[:owner]
     repo = params[:repo]
 

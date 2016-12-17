@@ -3,7 +3,6 @@
   # configure based on environment
   class DevRankAPI < Sinatra::Base
     get "/#{API_VER}/repos/:owner/:repo/?" do
-      puts params[:full_name]
       result = LoadRepository.call(params)
 
       if result.success?

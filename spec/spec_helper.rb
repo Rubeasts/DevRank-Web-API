@@ -28,7 +28,7 @@ VCR.configure do |c|
 end
 
 HAPPY_USERNAME = 'rjollet'
-SAD_USERNAME = '12547'
+SAD_USERNAME = '12547sdf'
 HAPPY_REPO = 'DeepViz'
 SAD_REPO = 'blabla'
 HAPPY_OWNER = 'rjollet'

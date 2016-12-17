@@ -11,7 +11,7 @@ class LoadRepositoryFromGithub
       Right github_repo
     else
       Left Error.new  :not_found,
-                      "Developer (repository: #{input}) could not be found"
+                      "repository: #{input}) could not be found"
     end
   }
 
@@ -29,14 +29,14 @@ class LoadRepositoryFromGithub
       open_issues_count: gh_repo.open_issues_count
     )
 
-    Right developer
+    Right repository
   }
 
   def self.call(params)
     Dry.Transaction(container: self) do
       step :check_if_repository_exist
+      step :create_repository
     end.call(params)
   end
 
-  private_class_method
 end

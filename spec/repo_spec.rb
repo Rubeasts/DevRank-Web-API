@@ -16,7 +16,7 @@ describe 'Repository Routes' do
       DB[:repositories].delete
     end
 
-    it '(HAPPY) should find a repository from an owner and a repository name' do
+    it '(HAPPY) should find a repo from an owner and a repo name' do
       LoadRepository.call(owner: HAPPY_USERNAME, repo: HAPPY_REPO)
       get "api/v0.1/repos/#{Repository.first.full_name}"
       last_response.status.must_equal 200
@@ -24,12 +24,11 @@ describe 'Repository Routes' do
       last_response.body.must_equal(RepositoryRepresenter.new(Repository.first).to_json)
     end
 
-    it '(HAPPY) should find a repository (not in the db) from an owner and a repository name' do
+    it '(HAPPY) should find a repo (not in db) from an owner and a repo name' do
       get "api/v0.1/repos/#{HAPPY_USERNAME}/#{HAPPY_REPO}"
       last_response.status.must_equal 200
       last_response.content_type.must_equal 'application/json'
       last_response.body.must_equal(RepositoryRepresenter.new(Repository.first).to_json)
-
     end
 
     it '(SAD) should report error repositorie cannot be found' do

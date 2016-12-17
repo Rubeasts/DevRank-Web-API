@@ -10,7 +10,7 @@ class UpdateRepository
       Right(repo)
     else
       Left Error.new  :not_found,
-                      "Repository (repository: #{repository}) could not be found"
+                      "Repository: #{repository} could not be found"
     end
   }
 
@@ -20,7 +20,7 @@ class UpdateRepository
       Right repository: repo, github_repo: github_repo
     else
       Left Error.new  :not_found,
-                      "Repository (repository: #{repo}) could not be found"
+                      "Repository: #{repo} could not be found"
     end
   }
 
@@ -51,12 +51,9 @@ class UpdateRepository
 
   def self.write_developer_repository(developer, gh_repo)
     developer.add_repository(
-      github_id: gh_repo.id,
-      full_name: gh_repo.full_name,
-      is_private: gh_repo.is_private,
-      created_at: gh_repo.created_at,
-      pushed_at: gh_repo.pushed_at,
-      size: gh_repo.size,
+      github_id: gh_repo.id, full_name: gh_repo.full_name,
+      is_private: gh_repo.is_private, created_at: gh_repo.created_at,
+      pushed_at: gh_repo.pushed_at, size: gh_repo.size,
       stargazers_count: gh_repo.stargazers_count,
       watchers_count: gh_repo.watchers_count,
       forks_count: gh_repo.forks_count,

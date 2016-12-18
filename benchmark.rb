@@ -1,7 +1,8 @@
 require_relative 'init.rb'
 require 'benchmark'
 
-DEVS = ['rjollet', 'NicholasDanks', 'samilaaroussi', 'fabiodaio', 'isaacmtz90']
+DEVS = ['rjollet', 'NicholasDanks', 'samilaaroussi', 'fabiodaio', 'isaacmtz90',
+        'omarsar']
 developers = DEVS.map { |username| LoadDeveloper.call(username).value }
 
 def async_quality_update(developer)

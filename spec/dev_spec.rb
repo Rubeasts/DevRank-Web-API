@@ -2,7 +2,6 @@
 require_relative 'spec_helper'
 
 describe 'Dev Routes' do
-
   before do
     VCR.insert_cassette DEV_CASSETTE, record: :new_episodes
   end
@@ -18,7 +17,7 @@ describe 'Dev Routes' do
       LoadDeveloper.call(HAPPY_USERNAME)
     end
 
-    it 'HAPPY: should find a developer that has been loaded given it username' do
+    it 'HAPPY: should find a dev that has been loaded given it username' do
       get "api/v0.1/dev/#{HAPPY_USERNAME}"
 
       last_response.status.must_equal 200

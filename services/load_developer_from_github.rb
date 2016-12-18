@@ -36,7 +36,7 @@ class LoadDeveloperFromGithub
 
   register :update_repo_code_quality, lambda { |developer|
     developer.repositories.each do |repo|
-      if repo.language.to_s.include? "Ruby"
+      if repo.language.to_s.include? 'Ruby'
         UpdateRepositoryQualityData.call(repo)
       end
     end
@@ -55,12 +55,9 @@ class LoadDeveloperFromGithub
 
   def self.write_developer_repository(developer, gh_repo)
     developer.add_repository(
-      github_id: gh_repo.id,
-      full_name: gh_repo.full_name,
-      is_private: gh_repo.is_private,
-      created_at: gh_repo.created_at,
-      pushed_at: gh_repo.pushed_at,
-      size: gh_repo.size,
+      github_id: gh_repo.id, full_name: gh_repo.full_name,
+      is_private: gh_repo.is_private, created_at: gh_repo.created_at,
+      pushed_at: gh_repo.pushed_at, size: gh_repo.size,
       stargazers_count: gh_repo.stargazers_count,
       watchers_count: gh_repo.watchers_count,
       forks_count: gh_repo.forks_count,

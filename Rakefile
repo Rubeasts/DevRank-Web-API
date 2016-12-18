@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'rake/testtask'
+require 'getclonedata'
 
 task :default do
   puts `rake -T`
@@ -62,10 +63,18 @@ namespace :db do
   end
 end
 
-desc 'delete cassette fixtures'
-task :wipe do
-  sh 'rm spec/fixtures/cassettes/*.yml' do |ok, _|
-    puts(ok ? 'Cassettes deleted' : 'No casseettes found')
+desc 'delete files or folders in casset or cloned repositories'
+namespace :wipe do
+  desc 'wipe cassettes'
+  task :cassettes do
+    sh 'rm spec/fixtures/cassettes/*.yml' do |ok, _|
+      puts(ok ? 'Cassettes deleted' : 'No casseettes found')
+    end
+  end
+
+  desc "wipe clones repositories"
+  task :repos do
+    GetCloneData::ClonedRepo.wipe
   end
 end
 

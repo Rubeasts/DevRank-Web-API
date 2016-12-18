@@ -1,7 +1,8 @@
 require_relative 'init.rb'
 require 'benchmark'
 
-developer = Developer.find(username: 'rjollet')
+DEVS = ['rjollet', 'NicholasDanks', 'samilaaroussi', 'fabiodaio', 'isaacmtz90']
+developers = DEVS.map { |username| LoadDeveloper.call(username).value }
 
 def async_quality_update(developer)
   promised_data = developer.repositories.map do |repo|
@@ -19,11 +20,11 @@ def quality_update(developer)
 end
 
 norm = Benchmark.measure do
-  5.times.map { quality_update(developer) }
+  developers.each { |developer| quality_update(developer) }
 end.real
 
 conc = Benchmark.measure do
-  5.times.map { async_quality_update(developer) }
+  developers.each { |developer| async_quality_update(developer) }
 end.real
 
 puts "Normal = #{norm}"

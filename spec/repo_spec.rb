@@ -52,7 +52,6 @@ describe 'Repository Routes' do
       modified = Repository.first
       modified.github_id = nil
       modified.save
-      puts "api/v0.1/repos/#{HAPPY_USERNAME}/#{HAPPY_REPO}"
       put "api/v0.1/repos/#{HAPPY_USERNAME}/#{HAPPY_REPO}"
       last_response.status.must_equal 204
       updated = Repository.first

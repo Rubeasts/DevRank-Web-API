@@ -41,7 +41,7 @@ class UpdateDeveloper
 
   register :update_repo_code_quality, lambda { |developer|
     developer.repositories.each do |repo|
-      if repo.language.to_s.include? "Ruby"
+      if repo.language.to_s.include? 'Ruby'
         UpdateRepositoryQualityData.call(repo)
       end
     end

@@ -7,10 +7,9 @@ def async_quality_update(developer)
   promised_data.map(&:value)
 end
 
-
 def quality_update(developer)
   developer.repositories.each do |repo|
-    if repo.language.to_s.include? "Ruby"
+    if repo.language.to_s.include? 'Ruby'
       UpdateRepositoryQualityData.call(repo)
     end
   end

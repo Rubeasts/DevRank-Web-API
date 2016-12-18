@@ -8,17 +8,17 @@ gem 'puma'
 gem 'rake'
 gem 'sinatra'
 
-gem 'gitget'
 gem 'getclonedata'
+gem 'gitget'
 
 gem 'sequel'
 
 gem 'dry-container'
 gem 'dry-monads'
 gem 'dry-transaction'
+gem 'concurrent-ruby'
 gem 'multi_json'
 gem 'roar'
-gem 'concurrent-ruby'
 
 group :development, :test do
   gem 'sqlite3'

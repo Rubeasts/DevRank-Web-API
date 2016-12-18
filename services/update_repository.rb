@@ -30,11 +30,7 @@ class UpdateRepository
   register :update_repository, lambda { |input|
     begin
       repo = input[:repo]
-      puts repo.github_id
-      puts "---"
       github_repo = input[:github_repo]
-      puts github_repo.id
-      puts "---"
       repo.update(
         github_id: github_repo.id, full_name: github_repo.full_name,
         is_private: github_repo.is_private, created_at: github_repo.created_at,

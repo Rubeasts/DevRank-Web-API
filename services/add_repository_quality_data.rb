@@ -10,7 +10,7 @@ class UpdateRepositoryQualityData
     if quality_data
       Right(repo: repo, quality_data: quality_data)
     else
-      Left Error.new  :not_found, "Quality Data could not be found"
+      Left Error.new :not_found, 'Quality Data could not be found'
     end
   }
 
@@ -24,10 +24,9 @@ class UpdateRepositoryQualityData
       repo.save
       Right repo
     rescue
-      Left Error.new  :cannot_load, "Quality Data cannot be load"
+      Left Error.new :cannot_load, 'Quality Data cannot be load'
     end
   }
-
 
   def self.call(params)
     Dry.Transaction(container: self) do

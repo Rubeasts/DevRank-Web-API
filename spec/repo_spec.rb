@@ -39,4 +39,32 @@ describe 'Repository Routes' do
       last_response.body.must_include SAD_REPO
     end
   end
+
+  describe 'Request to update a repository' do
+    before do
+      DB[:developers].delete
+      DB[:repositories].delete
+      LoadRepository.call(owner: HAPPY_USERNAME, repo: HAPPY_REPO)
+    end
+
+    it '(HAPPY) should successfully update valid repository' do
+      original = Repository.first
+      modified = Repository.first
+      modified.github_id = nil
+      modified.save
+      puts "api/v0.1/repos/#{HAPPY_USERNAME}/#{HAPPY_REPO}"
+      put "api/v0.1/repos/#{HAPPY_USERNAME}/#{HAPPY_REPO}"
+      last_response.status.must_equal 204
+      updated = Repository.first
+      updated.github_id.must_equal(original.github_id)
+      last_response.body == RepositoryRepresenter.new(original).to_json
+    end
+
+    it '(BAD) should report error if given invalid developer username' do
+      put "api/v0.1/repos/#{SAD_USERNAME}/#{SAD_REPO}"
+
+      last_response.status.must_equal 404
+      last_response.body.must_include SAD_USERNAME
+    end
+  end
 end

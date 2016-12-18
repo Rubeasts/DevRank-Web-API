@@ -32,3 +32,4 @@ SAD_USERNAME = '12547sdf'
 HAPPY_REPO = 'DeepViz'
 SAD_REPO = 'blabla'
 HAPPY_OWNER = 'rjollet'
+HAPPY_FULL_NAME = [HAPPY_USERNAME, HAPPY_REPO].join('/')

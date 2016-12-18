@@ -30,10 +30,18 @@ class LoadRepositoryFromGithub
     Right repository
   }
 
+  register :update_repo_code_quality, lambda { |repo|
+    if repo.language.to_s.include? "Ruby"
+      UpdateRepositoryQualityData.call(repo)
+    end
+    Right repo
+  }
+
   def self.call(params)
     Dry.Transaction(container: self) do
       step :check_if_repository_exist
       step :create_repository
+      step :update_repo_code_quality
     end.call(params)
   end
 end

@@ -38,9 +38,11 @@ class LoadRepositoryFromGithub
   }
 
   register :update_repo_code_quality, lambda { |repo|
-    if repo.language.to_s.include? 'Ruby'
-      UpdateRepositoryQualityData.call(repo)
-    end
+    Concurrent::Promise.execute {
+      if repo.language.to_s.include? 'Ruby'
+        UpdateRepositoryQualityData.call(repo)
+      end
+    }
     Right repo
   }
 

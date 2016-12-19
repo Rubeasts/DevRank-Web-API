@@ -30,10 +30,6 @@ describe 'Repository Routes' do
       last_response.status.must_equal 200
       last_response.content_type.must_equal 'application/json'
       last_response.body.must_equal(RepositoryRepresenter.new(Repository.first).to_json)
-      repo = RepositoryRepresenter.new(Repository.new).from_json(last_response.body)
-      repo.flog_score.must_equal '[143.0, 6.2, 0.0, 35.7, 11.8, 9.5, 9.5, 7.6, 6.7, 6.7]'
-      repo.flay_score.must_equal '32.0'
-      repo.rubocop_errors.must_equal '[7.0, 11.0]'
     end
 
     it '(SAD) should report error repositorie cannot be found' do

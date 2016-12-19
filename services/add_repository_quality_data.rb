@@ -18,10 +18,11 @@ class UpdateRepositoryQualityData
     begin
       repo = input[:repo]
       quality_data = input[:quality_data]
-      repo.flog_score = quality_data.flog.to_s
-      repo.flay_score = quality_data.flay.to_s
-      repo.rubocop_errors = quality_data.rubocop.to_s
+      repo.flog_score = quality_data.get_flog_scores.to_s
+      repo.flay_score = quality_data.get_flay_score.to_s
+      repo.rubocop_errors = quality_data.get_rubocop_errors.to_s
       repo.save
+      quality_data.wipe
       Right repo
     rescue
       Left Error.new :cannot_load, 'Quality Data cannot be load'

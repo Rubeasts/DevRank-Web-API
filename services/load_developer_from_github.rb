@@ -29,16 +29,8 @@ class LoadDeveloperFromGithub
     )
 
     github_developer.repos.each do |gh_repo|
-      write_developer_repository developer, gh_repo
-    end
-    Right developer
-  }
-
-  register :update_repo_code_quality, lambda { |developer|
-    developer.repositories.each do |repo|
-      if repo.language.to_s.include? 'Ruby'
-        UpdateRepositoryQualityData.call(repo)
-      end
+      owner, repo = gh_repo.full_name.split('/')
+      LoadRepository.call(owner: owner, repo: repo)
     end
     Right developer
   }
@@ -47,23 +39,6 @@ class LoadDeveloperFromGithub
     Dry.Transaction(container: self) do
       step :check_if_developer_exist
       step :create_developer_and_repositories
-      step :update_repo_code_quality
     end.call(params)
-  end
-
-  private_class_method
-
-  def self.write_developer_repository(developer, gh_repo)
-    developer.add_repository(
-      github_id: gh_repo.id, full_name: gh_repo.full_name,
-      is_private: gh_repo.is_private, created_at: gh_repo.created_at,
-      pushed_at: gh_repo.pushed_at, size: gh_repo.size,
-      stargazers_count: gh_repo.stargazers_count,
-      watchers_count: gh_repo.watchers_count,
-      forks_count: gh_repo.forks_count,
-      open_issues_count: gh_repo.open_issues_count,
-      language: gh_repo.language,
-      git_url: gh_repo.git_url
-    )
   end
 end

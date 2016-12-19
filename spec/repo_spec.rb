@@ -22,6 +22,7 @@ describe 'Repository Routes' do
       last_response.status.must_equal 200
       last_response.content_type.must_equal 'application/json'
       last_response.body.must_equal(RepositoryRepresenter.new(Repository.first).to_json)
+
     end
 
     it '(HAPPY) should find a repo (not in db) from an owner and a repo name' do

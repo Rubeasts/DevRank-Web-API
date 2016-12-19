@@ -29,7 +29,7 @@ end
 
 HAPPY_USERNAME = 'rjollet'
 SAD_USERNAME = '12547sdf'
-HAPPY_REPO = 'DeepViz'
+HAPPY_REPO = 'SOA_flip_flap'
 SAD_REPO = 'blabla'
 HAPPY_OWNER = 'rjollet'
 HAPPY_FULL_NAME = [HAPPY_USERNAME, HAPPY_REPO].join('/')

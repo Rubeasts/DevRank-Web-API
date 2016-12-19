@@ -24,8 +24,15 @@ class LoadRepositoryFromGithub
       stargazers_count: gh_repo.stargazers_count,
       watchers_count: gh_repo.watchers_count,
       forks_count: gh_repo.forks_count,
-      open_issues_count: gh_repo.open_issues_count
+      open_issues_count: gh_repo.open_issues_count,
+      language: gh_repo.language,
+      git_url: gh_repo.git_url
     )
+
+    owner, _ = gh_repo.full_name.split('/')
+    if(dev = Developer.find(username: owner))
+      repository.update(developer_id: dev.id)
+    end
 
     Right repository
   }

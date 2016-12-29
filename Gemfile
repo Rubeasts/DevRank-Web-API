@@ -19,6 +19,8 @@ gem 'dry-transaction'
 gem 'concurrent-ruby'
 gem 'multi_json'
 gem 'roar'
+gem 'aws-sdk'
+gem 'shoryuken'
 
 group :development, :test do
   gem 'sqlite3'

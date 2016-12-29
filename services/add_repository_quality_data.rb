@@ -48,12 +48,14 @@ class UpdateRepositoryQualityData
 
   register :save_repository_quality_data, lambda { |input|
     begin
+      SaveQualityDataWorker.perform_async(input)
       repo = input[:repo]
       quality_data = input[:quality_data]
 
       repo.flay_score = quality_data.get_flay_score
       repo.save
       quality_data.wipe
+
       Right repo
     rescue
       Left Error.new :cannot_load, 'Quality Data cannot be load'

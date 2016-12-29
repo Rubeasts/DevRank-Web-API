@@ -4,8 +4,8 @@
 class DevRankAPI < Sinatra::Base
   extend Econfig::Shortcut
 
-  Shoryuken.configure_server do |config|
-  	config.aws = {
+  Shoryuken.configure_server do |app_config|
+  	app_config.aws = {
   	  access_key_id:     config.AWS_ACCESS_KEY_ID,
   	  secret_access_key: config.AWS_SECRET_ACCESS_KEY,
   	  region:            config.AWS_REGION

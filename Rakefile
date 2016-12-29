@@ -104,7 +104,9 @@ namespace :queue do
   desc 'Create SQS queue for Shoryuken'
   task :create do
     config = DevRankAPI.config
-    sqs = Aws::SQS::Client.new(region: config.AWS_REGION)
+    sqs = Aws::SQS::Client.new(access_key_id: config.AWS_SECRET_KEY_ID,
+                               secret_access_key: config.AWS_SECRET_ACCESS_KEY,
+                               region: config.AWS_REGION)
 
     begin
       queue = sqs.create_queue(queue_name: config.QUALITY_QUEUE)

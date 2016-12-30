@@ -5,7 +5,19 @@ class UpdateRepositoryQualityData
   extend Dry::Monads::Either::Mixin
   extend Dry::Container::Mixin
 
-  register :load_repository_quality_data, lambda { |repo|
+  register :parse_queue_message, lambda { |queue_message|
+    begin
+      message = QueueMessageRepresenter.new(
+                  QueueMessage.new
+                ).from_json(queue_message)
+      Right message
+    rescue
+      Error.new :not_found, 'Cannot parse queue message'
+    end
+  }
+
+  register :load_repository_quality_data, lambda { |message|
+    repo = Repository.find(id: message[:repo_id])
     quality_data = GetCloneData::ClonedRepo.clone(git_url: repo.git_url)
     if quality_data.repo_path.nil?
       Left Error.new :not_found, 'Quality Data could not be found'
@@ -48,7 +60,6 @@ class UpdateRepositoryQualityData
 
   register :save_repository_quality_data, lambda { |input|
     begin
-      SaveQualityDataWorker.perform_async(input)
       repo = input[:repo]
       quality_data = input[:quality_data]
 
@@ -64,6 +75,7 @@ class UpdateRepositoryQualityData
 
   def self.call(params)
     Dry.Transaction(container: self) do
+      step :parse_queue_message
       step :load_repository_quality_data
       step :save_flog_scores
       step :save_rubocop_scores

@@ -49,11 +49,9 @@ class UpdateRepository
 
   register :update_repo_code_quality, lambda { |repo|
     if repo.language.to_s.include? 'Ruby'
-      message = QueueMessageRepresenter.new(
-                  QueueMessage.new(repo.id)
-                ).to_json
-      SaveQualityDataWorker.perform_async(message)
-      puts 'pass'
+      SaveQualityDataWorker.perform_async(
+        QueueMessageRepresenter.new(QueueMessage.new(repo.id)).to_json
+      )
     end
     Right repo
   }

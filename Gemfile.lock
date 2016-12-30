@@ -4,7 +4,32 @@ GEM
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
     ast (2.3.0)
+    aws-sdk (2.6.43)
+      aws-sdk-resources (= 2.6.43)
+    aws-sdk-core (2.6.43)
+      aws-sigv4 (~> 1.0)
+      jmespath (~> 1.0)
+    aws-sdk-resources (2.6.43)
+      aws-sdk-core (= 2.6.43)
+    aws-sigv4 (1.0.0)
     bond (0.5.1)
+    celluloid (0.17.3)
+      celluloid-essentials
+      celluloid-extras
+      celluloid-fsm
+      celluloid-pool
+      celluloid-supervision
+      timers (>= 4.1.1)
+    celluloid-essentials (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-extras (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-fsm (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-pool (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-supervision (0.20.6)
+      timers (>= 4.1.1)
     cloc (0.9.0)
     concurrent-ruby (1.0.4)
     crack (0.4.3)
@@ -43,10 +68,12 @@ GEM
       flog (~> 4.4)
       http (~> 2.1)
       rubocop (~> 0.42)
-    gitget (0.4.2)
+    gitget (0.5.0)
+      concurrent-ruby (~> 1.0)
       http (~> 2.0)
     hashdiff (0.3.2)
     hirb (0.7.3)
+    hitimes (1.2.4)
     http (2.1.0)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -56,6 +83,7 @@ GEM
       domain_name (~> 0.5)
     http-form_data (1.0.1)
     http_parser.rb (0.6.0)
+    jmespath (1.3.1)
     json (2.0.2)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -109,12 +137,17 @@ GEM
     safe_yaml (1.0.4)
     sequel (4.41.0)
     sexp_processor (4.7.0)
+    shoryuken (2.1.2)
+      aws-sdk-core (~> 2)
+      celluloid (~> 0.16)
     sinatra (1.4.7)
       rack (~> 1.5)
       rack-protection (~> 1.4)
       tilt (>= 1.3, < 3)
     sqlite3 (1.3.12)
     tilt (2.0.5)
+    timers (4.1.2)
+      hitimes
     tux (0.3.0)
       ripl (>= 0.3.5)
       ripl-multi_line (>= 0.2.4)
@@ -136,7 +169,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  concurrent-ruby
+  aws-sdk
   dry-container
   dry-monads
   dry-transaction
@@ -158,6 +191,7 @@ DEPENDENCIES
   roar
   rubocop
   sequel
+  shoryuken
   sinatra
   sqlite3
   tux

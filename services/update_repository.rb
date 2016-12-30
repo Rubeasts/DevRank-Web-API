@@ -48,11 +48,9 @@ class UpdateRepository
   }
 
   register :update_repo_code_quality, lambda { |repo|
-    Concurrent::Promise.execute {
-      if repo.language.to_s.include? 'Ruby'
-        UpdateRepositoryQualityData.call(repo)
-      end
-    }
+    if repo.language.to_s.include? 'Ruby'
+      UpdateRepositoryQualityData.call(repo)
+    end
     Right repo
   }
 

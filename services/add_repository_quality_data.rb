@@ -30,10 +30,10 @@ class UpdateRepositoryQualityData
     begin
       repo = input[:repo]
       quality_data = input[:quality_data]
-      if repo.flogscore.nil?
-        add_flogscore(repo, quality_data.get_flog_scores)
+      if repo.flog_score.nil?
+        add_flog_score(repo, quality_data.get_flog_scores)
       else
-        repo.flogscore.update quality_data.get_flog_scores
+        repo.flog_score.update quality_data.get_flog_scores
       end
       Right(repo: repo, quality_data: quality_data)
     rescue
@@ -46,10 +46,10 @@ class UpdateRepositoryQualityData
       repo = input[:repo]
       quality_data = input[:quality_data]
 
-      if repo.rubocopscore.nil?
-        add_rubocopscore(repo, quality_data.get_rubocop_errors)
+      if repo.rubocop_score.nil?
+        add_rubocop_score(repo, quality_data.get_rubocop_errors)
       else
-        repo.rubocopscore.update quality_data.get_rubocop_errors
+        repo.rubocop_score.update quality_data.get_rubocop_errors
       end
 
       Right(repo: repo, quality_data: quality_data)
@@ -83,23 +83,23 @@ class UpdateRepositoryQualityData
     end.call(params)
   end
 
-  def self.add_flogscore(repo, flogscore)
-    new_flogscore = Flogscore.create(
-      total_score: flogscore[:total_score],
-      max_score: flogscore[:max_score],
-      average: flogscore[:average]
+  def self.add_flog_score(repo, flog_score)
+    new_flog_score = Flogscore.create(
+      total_score: flog_score[:total_score],
+      max_score: flog_score[:max_score],
+      average: flog_score[:average]
     )
-    repo.flogscore = new_flogscore
-    repo.flogscore.save
+    repo.flog_score = new_flog_score
+    repo.flog_score.save
   end
 
-  def self.add_rubocopscore(repo, rubocopscore)
-    new_rubocopscore = Rubocopscore.create(
-      offense_count: rubocopscore[:offense_count],
-      target_file_count: rubocopscore[:target_file_count],
-      inspected_file_count: rubocopscore[:inspected_file_count]
+  def self.add_rubocop_score(repo, rubocop_score)
+    new_rubocop_score = Rubocopscore.create(
+      offense_count: rubocop_score[:offense_count],
+      target_file_count: rubocop_score[:target_file_count],
+      inspected_file_count: rubocop_score[:inspected_file_count]
     )
-    repo.rubocopscore = new_rubocopscore
-    repo.rubocopscore.save
+    repo.rubocop_score = new_rubocop_score
+    repo.rubocop_score.save
   end
 end

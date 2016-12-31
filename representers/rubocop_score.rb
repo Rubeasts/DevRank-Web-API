@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Roar:Decorator for representing the rubocop score
-class RubocopscoreRepresenter < Roar::Decorator
+class RubocopScoreRepresenter < Roar::Decorator
   include Roar::JSON
 
   property :offense_count

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Roar:Decorator for representing the rubocop score
-class FlogscoreRepresenter < Roar::Decorator
+class FlogScoreRepresenter < Roar::Decorator
   include Roar::JSON
 
   property :total_score

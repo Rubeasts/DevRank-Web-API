@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-require_relative 'rubocopscore'
-require_relative 'flogscore'
+require_relative 'rubocop_score'
+require_relative 'flog_score'
 
 # Roar:Decorator for representing the developer
 class RepositoryRepresenter < Roar::Decorator
@@ -18,8 +18,8 @@ class RepositoryRepresenter < Roar::Decorator
   property :forks_count
   property :open_issues_count
   property :git_url
-  property :flogscore, extend: FlogscoreRepresenter, class: Flogscore
+  property :flog_score, extend: FlogScoreRepresenter, class: FlogScore
   property :flay_score
-  property :rubocopscore, extend: RubocopscoreRepresenter, class: Rubocopscore
+  property :rubocop_score, extend: RubocopScoreRepresenter, class: RubocopScore
   property :language
 end

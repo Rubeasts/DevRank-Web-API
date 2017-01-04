@@ -84,7 +84,7 @@ class UpdateRepositoryQualityData
   end
 
   def self.add_flog_score(repo, flog_score)
-    new_flog_score = Flogscore.create(
+    new_flog_score = FlogScore.create(
       total_score: flog_score[:total_score],
       max_score: flog_score[:max_score],
       average: flog_score[:average]
@@ -94,7 +94,7 @@ class UpdateRepositoryQualityData
   end
 
   def self.add_rubocop_score(repo, rubocop_score)
-    new_rubocop_score = Rubocopscore.create(
+    new_rubocop_score = RubocopScore.create(
       offense_count: rubocop_score[:offense_count],
       target_file_count: rubocop_score[:target_file_count],
       inspected_file_count: rubocop_score[:inspected_file_count]

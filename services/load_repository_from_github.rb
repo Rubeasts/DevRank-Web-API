@@ -75,9 +75,8 @@ class LoadRepositoryFromGithub
     repo = input[:repository]
     channel_id = input[:channel_id]
     if repo.language.to_s.include? 'Ruby'
-      worker_params = {repo_id: repo.id, channel_id: channel_id}
       SaveQualityDataWorker.perform_async(
-        QueueMessageRepresenter.new(QueueMessage.new(worker_params)).to_json
+        QueueMessageRepresenter.new(QueueMessage.new(repo.id, channel_id)).to_json
       )
     end
     Right repo

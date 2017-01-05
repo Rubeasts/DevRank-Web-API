@@ -5,4 +5,5 @@ class QueueMessageRepresenter < Roar::Decorator
   include Roar::JSON
 
   property :repo_id
+  property :channel_id
 end

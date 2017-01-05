@@ -7,6 +7,7 @@ class AddRubyRepositoryQualityData
 
   register :parse_queue_message, lambda { |queue_message|
     begin
+      puts queue_message
       message = QueueMessageRepresenter.new(
                   QueueMessage.new
                 ).from_json(queue_message)
@@ -17,6 +18,7 @@ class AddRubyRepositoryQualityData
   }
 
   register :load_repository_quality_data, lambda { |message|
+    puts message
     repo = Repository.find(id: message[:repo_id])
     quality_data = GetCloneData::ClonedRepo.clone(git_url: repo.git_url)
     if quality_data.repo_path.nil?

@@ -5,10 +5,11 @@ class LoadDeveloperFromGithub
   extend Dry::Monads::Either::Mixin
   extend Dry::Container::Mixin
 
-  register :check_if_developer_exist, lambda { |dev_username|
-    github_dev = Github::Developer.find(username: dev_username)
+  register :check_if_developer_exist, lambda { |params|
+    github_dev = Github::Developer.find(username: params[:params])
+    params[:github_dev] = github_dev
     if github_dev
-      Right github_dev
+      Right(params)
     else
       Left Error.new  :not_found,
                       "Developer (username: #{dev_username}) could not be found"
@@ -17,6 +18,7 @@ class LoadDeveloperFromGithub
 
   register :create_developer_and_repositories, lambda { |github_developer|
     begin
+      github_developer = params[:github_dev]
       developer = Developer.create(
         github_id: github_developer.id,
         username: github_developer.username,
@@ -28,6 +30,10 @@ class LoadDeveloperFromGithub
         following: github_developer.following.count,
         stars: github_developer.starred.count
       )
+
+      channel_id = params[:channel_id]
+      puts channel_id
+
       Right(dev: developer, gh_dev: github_developer)
     rescue
       Left(
@@ -45,7 +51,7 @@ class LoadDeveloperFromGithub
       github_developer = input[:gh_dev]
       repo_monads = github_developer.repos.map do |gh_repo|
         owner, repo = gh_repo.full_name.split('/')
-        LoadRepository.call(owner: owner, repo: repo)
+        LoadRepository.call(owner: owner, repo: repo, channel_id: channel_id)
       end
       if repo_monads.map(&:success?)
         Right developer

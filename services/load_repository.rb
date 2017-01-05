@@ -7,12 +7,13 @@ class LoadRepository
   register :check_owner_repo_exist, lambda { |params|
     owner = params[:owner]
     repo = params[:repo]
+    channel_id = params[:channel_id]
 
     if owner.nil? || repo.nil?
       Left Error.new  :bad_request,
                       'Bad Query, the request should be /repos/:owner/:repo'
     else
-      Right(owner: owner, repo: repo)
+      Right(owner: owner, repo: repo, channel_id: channel_id)
     end
   }
 

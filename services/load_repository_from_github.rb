@@ -9,15 +9,22 @@ class LoadRepositoryFromGithub
     repo = input[:repo]
     github_repo = Github::Repository.find(owner: owner, repo: repo)
     if github_repo
-      Right github_repo
+      input[:github_repo] = github_repo 
+      Right input
     else
       Left Error.new  :not_found,
                       "Repository: #{input} could not be found"
     end
   }
 
+<<<<<<< 44dc98132e4ef421944d4042b16654e9bff97200
   register :create_repository, lambda { |gh_repo|
     repository = Repository.new(
+=======
+  register :create_repository, lambda { |input|
+    gh_repo = input[:github_repo]
+    repository = Repository.create(
+>>>>>>> passes the channel id
       github_id: gh_repo.id, full_name: gh_repo.full_name,
       is_private: gh_repo.is_private, created_at: gh_repo.created_at,
       pushed_at: gh_repo.pushed_at, size: gh_repo.size,
@@ -33,6 +40,7 @@ class LoadRepositoryFromGithub
     if(dev = Developer.find(username: owner))
       repository.developer_id = dev.id
     end
+<<<<<<< 44dc98132e4ef421944d4042b16654e9bff97200
 
     Right repo: repository, gh_repo: gh_repo
   }
@@ -57,12 +65,19 @@ class LoadRepositoryFromGithub
       Left Error.new  :cannot_load,
                       "Cannot save to #{repo.full_name}"
     end
+=======
+    input[:repository] = repository
+    Right input
+>>>>>>> passes the channel id
   }
 
-  register :update_repo_code_quality, lambda { |repo|
+  register :update_repo_code_quality, lambda { |input|
+    repo = input[:repository]
+    channel_id = input[:channel_id]
     if repo.language.to_s.include? 'Ruby'
+      worker_params = {repo_id: repo.id, channel_id: channel_id}
       SaveQualityDataWorker.perform_async(
-        QueueMessageRepresenter.new(QueueMessage.new(repo.id)).to_json
+        QueueMessageRepresenter.new(QueueMessage.new(worker_params)).to_json
       )
     end
     Right repo

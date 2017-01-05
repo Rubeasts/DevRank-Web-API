@@ -5,11 +5,11 @@ class LoadDeveloper
   extend Dry::Monads::Either::Mixin
   extend Dry::Container::Mixin
 
-  register :check_if_developer_is_loaded, lambda { |dev_username|
-    if (github_dev = Developer.find(username: dev_username))
+  register :check_if_developer_is_loaded, lambda { |service_params|
+    if (github_dev = Developer.find(username: service_params[:params]))
       Right github_dev
     else
-      LoadDeveloperFromGithub.call dev_username
+      LoadDeveloperFromGithub.call service_params
     end
   }
 

@@ -14,6 +14,6 @@ class SaveQualityDataWorker
 
   def perform(_sqs_msg, queue_message)
     puts queue_message
-  	UpdateRepositoryQualityData.call(queue_message)
+  	AddRubyRepositoryQualityData.call(queue_message)
   end
 end

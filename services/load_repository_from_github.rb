@@ -41,7 +41,7 @@ class LoadRepositoryFromGithub
     begin
       repo = input[:repo]
       gh_repo = input[:gh_repo]
-      repo = add_stat_to_repo(repo, gh_repo.stats)
+      repo = add_stat_to_repo(repo, gh_repo.stats(stat_names: ['code_frequency','participation']))
       Right repo
     rescue
       Left Error.new  :cannot_load,
@@ -80,11 +80,8 @@ class LoadRepositoryFromGithub
 
   def self.add_stat_to_repo(repo, stats)
     repo.stat = Stat.create(
-      contributors: stats[:contributors],
-      commit_activity: stats[:commit_activity],
-      code_frequency: stats[:code_frequency],
-      participation: stats[:participation],
-      punch_card: stats[:punch_card]
+      code_frequency: stats[:code_frequency].to_s,
+      participation: stats[:participation].to_s
     )
     repo
   end

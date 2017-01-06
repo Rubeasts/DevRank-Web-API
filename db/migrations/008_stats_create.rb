@@ -3,11 +3,8 @@ Sequel.migration do
     create_table(:stats) do
       primary_key :id
 
-      String :contributors, :text=>true
-      String :commit_activity, :text=>true
       String :code_frequency, :text=>true
       String :participation, :text=>true
-      String :punch_card, :text=>true
     end
 
     alter_table(:repositories) do

@@ -51,7 +51,7 @@ class UpdateRepository
     begin
       repo = input[:repo]
       gh_repo = input[:gh_repo]
-      update_stat_repo repo.stat, gh_repo.stats
+      update_stat_repo repo.stat, gh_repo.stats(stat_names: ['code_frequency','participation'])
       Right repo
     rescue
       Left Error.new :cannot_load, 'Repository stat could not be updated'
@@ -92,11 +92,8 @@ class UpdateRepository
 
   def self.update_stat_repo(stat, new_stat)
     stat.update(
-      contributors: new_stat[:contributors],
-      commit_activity: new_stat[:commit_activity],
-      code_frequency: new_stat[:code_frequency],
-      participation: new_stat[:participation],
-      punch_card: new_stat[:punch_card]
+      code_frequency: new_stat[:code_frequency].to_s,
+      participation: new_stat[:participation].to_s
     )
   end
 end

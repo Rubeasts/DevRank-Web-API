@@ -22,4 +22,5 @@ class RepositoryRepresenter < Roar::Decorator
   property :flay_score
   property :rubocop_score, extend: RubocopScoreRepresenter, class: RubocopScore
   property :language
+  property :stat, extend: StatRepresenter, class: Stat
 end

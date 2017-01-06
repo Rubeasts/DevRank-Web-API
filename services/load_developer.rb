@@ -7,9 +7,10 @@ class LoadDeveloper
 
   register :check_if_developer_is_loaded, lambda { |service_params|
     if (github_dev = Developer.find(username: service_params[:params]))
-      Right github_dev
+      Right Response.new(:loaded, DeveloperRepresenter.new(github_dev).to_json) 
     else
       LoadDeveloperFromGithub.call service_params
+      Right Response.new(:loading, {channel_id: service_params[:channel_id]}.to_json)
     end
   }
 

@@ -7,10 +7,8 @@ class DevRankAPI < Sinatra::Base
   	param = params[:username]
   	service_params = {params: param, channel_id: channel_id}
     result = LoadDeveloper.call(service_params)
-
     if result.success?
-      content_type 'application/json'
-      DeveloperRepresenter.new(result.value).to_json
+      ResponseRepresenter.new(result.value).to_status_response
     else
       ErrorRepresenter.new(result.value).to_status_response
     end

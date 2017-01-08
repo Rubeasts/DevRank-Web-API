@@ -15,4 +15,14 @@ class DevRankAPI < Sinatra::Base
   get '/?' do
     "RankDev latest version endpoints are at: /#{API_VER}/"
   end
+
+  def self.publish(channel_id, message)
+    puts "publish #{channel_id}, #{message}"
+    HTTP.headers('Content-Type' => 'application/json')
+        .post("http://localhost:9292/faye",
+              json: {
+                channel: "/#{channel_id}",
+                data: message
+              })
+  end
 end

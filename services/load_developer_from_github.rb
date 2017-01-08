@@ -31,7 +31,7 @@ class LoadDeveloperFromGithub
       )
 
       channel_id = input[:channel_id]
-      puts channel_id
+      DevRankAPI.publish(channel_id, "Start Loading #{developer.username}")
 
       Right dev: developer, gh_dev: github_developer, channel_id: channel_id
     rescue
@@ -45,9 +45,10 @@ class LoadDeveloperFromGithub
   }
 
   register :load_developer_repositories, lambda { |input|
-    puts 'load_developer_repositories'
     begin
       github_developer = input[:gh_dev]
+      DevRankAPI.publish  channel_id,
+                          "Loading repositories"
       repo_monads = github_developer.repos.map do |gh_repo|
         owner, repo = gh_repo.full_name.split('/')
         LoadRepository.call owner: owner, repo: repo, channel_id: input[:channel_id]

@@ -22,6 +22,9 @@ class LoadDeveloper
       Concurrent::Promise.execute {
         LoadDeveloperFromGithub.call  username: input[:username],
                                       channel_id: input[:channel_id]
+      }.then {
+        DevRankAPI.publish  input[:channel_id],
+                            "Complete"
       }
       Right Response.new(:loading, {channel_id: input[:channel_id]}.to_json)
     end

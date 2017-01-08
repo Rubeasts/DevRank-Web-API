@@ -25,7 +25,7 @@ class LoadDeveloper
       }.then { |res|
         if res.success?
           DevRankAPI.publish  input[:channel_id],
-                              "Completed input[:username]"
+                              "Completed #{input[:username]}"
         else
           DevRankAPI.publish  input[:channel_id],
                               res.value.message

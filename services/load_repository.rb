@@ -32,7 +32,7 @@ class LoadRepository
       }.then { |res|
         if res.success?
           DevRankAPI.publish  input[:channel_id],
-                              "Completed input[:repo]"
+                              "Completed #{input[:repo]}"
         else
           DevRankAPI.publish  input[:channel_id],
                               res.value.message

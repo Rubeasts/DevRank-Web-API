@@ -19,8 +19,10 @@ class LoadDeveloper
     if (github_dev = Developer.find(username: input[:username]))
       Right Response.new(:loaded, DeveloperRepresenter.new(github_dev).to_json)
     else
-      LoadDeveloperFromGithub.call  username: input[:username],
-                                    channel_id: input[:channel_id]
+      Concurrent::Promise.execute {
+        LoadDeveloperFromGithub.call  username: input[:username],
+                                      channel_id: input[:channel_id]
+      }
       Right Response.new(:loading, {channel_id: input[:channel_id]}.to_json)
     end
   }

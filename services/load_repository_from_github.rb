@@ -5,6 +5,7 @@ class LoadRepositoryFromGithub
   extend Dry::Container::Mixin
 
   register :check_if_repository_exist, lambda { |input|
+    puts "Load Repository from Githun #{input}"
     gh_repo = Github::Repository.find owner: input[:owner],
                                       repo: input[:repo]
     if gh_repo
@@ -16,6 +17,7 @@ class LoadRepositoryFromGithub
   }
 
   register :create_repository, lambda { |input|
+    puts "create_repository"
     gh_repo = input[:gh_repo]
     repository = Repository.new(
       github_id: gh_repo.id, full_name: gh_repo.full_name,
@@ -31,6 +33,7 @@ class LoadRepositoryFromGithub
 
     owner, _ = gh_repo.full_name.split('/')
     if(dev = Developer.find(username: owner))
+      puts "YYYAAAAA"
       repository.developer_id = dev.id
     end
 
@@ -38,6 +41,7 @@ class LoadRepositoryFromGithub
   }
 
   register :add_stats_to_repo, lambda { |input|
+    puts "add_stats_to_repo"
     begin
       repo = input[:repo]
       gh_repo = input[:gh_repo]
@@ -50,6 +54,7 @@ class LoadRepositoryFromGithub
   }
 
   register :save_repo_to_db, lambda { |input|
+    puts "save_repo_to_db"
     begin
       puts input
       repo = input[:repo]
@@ -62,6 +67,7 @@ class LoadRepositoryFromGithub
   }
 
   register :update_repo_code_quality, lambda { |input|
+    puts "update_repo_code_quality"
     repo = input[:repo]
     channel_id = input[:channel_id]
     if repo.language.to_s.include? 'Ruby'

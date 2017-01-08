@@ -45,12 +45,12 @@ class LoadDeveloperFromGithub
   }
 
   register :load_developer_repositories, lambda { |input|
+    puts 'load_developer_repositories'
     begin
-      developer = input[:dev]
       github_developer = input[:gh_dev]
       repo_monads = github_developer.repos.map do |gh_repo|
         owner, repo = gh_repo.full_name.split('/')
-        LoadRepository.call owner: owner, repo: repo, channel_id: channel_id
+        LoadRepository.call owner: owner, repo: repo, channel_id: input[:channel_id]
       end
       if repo_monads.map(&:success?)
         Right developer
@@ -61,7 +61,7 @@ class LoadDeveloperFromGithub
       Left(
         Error.new(
           :cannot_load,
-          "Developer #{developer.username} repositories could not be load"
+          "Developer #{input[:gh_dev].username} repositories could not be load"
         )
       )
     end

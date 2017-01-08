@@ -17,7 +17,7 @@ describe 'Repository Routes' do
     end
 
     it '(HAPPY) should find a repo from an owner and a repo name' do
-      LoadRepository.call(owner: HAPPY_USERNAME, repo: HAPPY_REPO)
+      LoadRepository.call(owner: HAPPY_USERNAME, repo: HAPPY_REPO, channel_id: CHANNEL_ID)
       get "api/v0.1/repos/#{Repository.first.full_name}"
       last_response.status.must_equal 200
       last_response.content_type.must_equal 'application/json'
@@ -45,7 +45,7 @@ describe 'Repository Routes' do
     before do
       DB[:developers].delete
       DB[:repositories].delete
-      LoadRepository.call(owner: HAPPY_USERNAME, repo: HAPPY_REPO)
+      LoadRepository.call(owner: HAPPY_USERNAME, repo: HAPPY_REPO, channel_id: CHANNEL_ID)
     end
 
     it '(HAPPY) should successfully update valid repository' do

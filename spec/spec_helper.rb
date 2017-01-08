@@ -34,3 +34,4 @@ HAPPY_REPO = 'SOA_flip_flap'
 SAD_REPO = 'blabla'
 HAPPY_OWNER = 'rjollet'
 HAPPY_FULL_NAME = [HAPPY_USERNAME, HAPPY_REPO].join('/')
+CHANNEL_ID = 'test'.hash

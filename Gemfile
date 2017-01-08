@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 ruby '2.3.1'
 
 gem 'econfig'
+gem 'faye', '= 1.1.2'
 gem 'json'
 gem 'puma'
 gem 'rake'

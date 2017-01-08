@@ -5,18 +5,19 @@ class LoadDeveloperFromGithub
   extend Dry::Monads::Either::Mixin
   extend Dry::Container::Mixin
 
-  register :check_if_developer_exist, lambda { |dev_username|
-    github_dev = Github::Developer.find(username: dev_username)
+  register :check_if_developer_exist, lambda { |input|
+    github_dev = Github::Developer.find username: input[:username]
     if github_dev
-      Right github_dev
+      Right gh_dev: github_dev, channel_id: input[:channel_id]
     else
       Left Error.new  :not_found,
-                      "Developer (username: #{dev_username}) could not be found"
+                      "Developer (username: #{input[:username]}) could not be found"
     end
   }
 
-  register :create_developer_and_repositories, lambda { |github_developer|
+  register :create_developer_and_repositories, lambda { |input|
     begin
+      github_developer = input[:gh_dev]
       developer = Developer.create(
         github_id: github_developer.id,
         username: github_developer.username,
@@ -28,12 +29,16 @@ class LoadDeveloperFromGithub
         following: github_developer.following.count,
         stars: github_developer.starred.count
       )
-      Right(dev: developer, gh_dev: github_developer)
+
+      channel_id = input[:channel_id]
+      DevRankAPI.publish(channel_id, "Start Loading #{developer.username}")
+
+      Right dev: developer, gh_dev: github_developer, channel_id: channel_id
     rescue
       Left(
         Error.new(
           :cannot_load,
-          "Developer (username: #{github_developer.username}) could not be load"
+          "Developer (username: #{input[:gh_dev].username}) could not be load"
         )
       )
     end
@@ -41,14 +46,19 @@ class LoadDeveloperFromGithub
 
   register :load_developer_repositories, lambda { |input|
     begin
-      developer = input[:dev]
       github_developer = input[:gh_dev]
+      channel_id = input[:channel_id]
+
+      DevRankAPI.publish  channel_id,
+                          "Loading repositories"
       repo_monads = github_developer.repos.map do |gh_repo|
+        puts gh_repo.full_name
         owner, repo = gh_repo.full_name.split('/')
-        LoadRepository.call(owner: owner, repo: repo)
+        LoadRepository.call owner: owner, repo: repo, channel_id: channel_id
       end
-      if repo_monads.map(&:success?)
-        Right developer
+      puts repo_monads.map(&:success?).reduce(&:&)
+      if repo_monads.map(&:success?).reduce(&:&)
+        Right input[:dev]
       else
         repo_monads.map(&:value)
       end
@@ -56,7 +66,7 @@ class LoadDeveloperFromGithub
       Left(
         Error.new(
           :cannot_load,
-          "Developer #{developer.username} repositories could not be load"
+          "Developer #{input[:gh_dev].username} repositories could not be load"
         )
       )
     end

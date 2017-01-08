@@ -5,16 +5,39 @@ class LoadDeveloper
   extend Dry::Monads::Either::Mixin
   extend Dry::Container::Mixin
 
-  register :check_if_developer_is_loaded, lambda { |dev_username|
-    if (github_dev = Developer.find(username: dev_username))
-      Right github_dev
+  register :check_if_username, lambda { |input|
+    puts input
+    if input[:username]
+      Right username: input[:username], channel_id: input[:channel_id]
     else
-      LoadDeveloperFromGithub.call dev_username
+      Left Error.new  :bad_request,
+                      "Should give a username"
+    end
+  }
+
+  register :check_if_developer_is_loaded, lambda { |input|
+    if (github_dev = Developer.find(username: input[:username]))
+      Right Response.new(:loaded, DeveloperRepresenter.new(github_dev).to_json)
+    else
+      Concurrent::Promise.execute {
+        LoadDeveloperFromGithub.call  username: input[:username],
+                                      channel_id: input[:channel_id]
+      }.then { |res|
+        if res.success?
+          DevRankAPI.publish  input[:channel_id],
+                              "Completed input[:username]"
+        else
+          DevRankAPI.publish  input[:channel_id],
+                              res.value.message
+        end
+      }
+      Right Response.new(:loading, {channel_id: input[:channel_id]}.to_json)
     end
   }
 
   def self.call(params)
     Dry.Transaction(container: self) do
+      step :check_if_username
       step :check_if_developer_is_loaded
     end.call(params)
   end

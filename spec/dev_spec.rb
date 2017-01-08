@@ -14,7 +14,7 @@ describe 'Dev Routes' do
     before do
       DB[:developers].delete
       DB[:repositories].delete
-      LoadDeveloper.call(HAPPY_USERNAME)
+      LoadDeveloper.call(username: HAPPY_USERNAME, channel_id: CHANNEL_ID)
     end
 
     it 'HAPPY: should find a dev that has been loaded given it username' do
@@ -61,7 +61,7 @@ describe 'Dev Routes' do
     before do
       DB[:developers].delete
       DB[:repositories].delete
-      LoadDeveloper.call(HAPPY_USERNAME)
+      LoadDeveloper.call(params: HAPPY_USERNAME, channel_id: CHANNEL_ID)
     end
 
     it '(HAPPY) should successfully update valid developer' do

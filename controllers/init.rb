@@ -3,6 +3,7 @@ require 'sinatra'
 require 'gitget'
 require 'econfig'
 require 'shoryuken'
+require 'http'
 
 require_relative 'base'
 

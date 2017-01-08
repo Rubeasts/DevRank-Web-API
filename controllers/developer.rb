@@ -3,18 +3,17 @@
 # configure based on environment
 class DevRankAPI < Sinatra::Base
   get "/#{API_VER}/dev/:username/?" do
-    result = LoadDeveloper.call(params[:username])
-
+  	channel_id = (headers.to_s + params.to_s).hash
+    result = LoadDeveloper.call(username: params[:username], channel_id: channel_id)
     if result.success?
-      content_type 'application/json'
-      DeveloperRepresenter.new(result.value).to_json
+      ResponseRepresenter.new(result.value).to_status_response
     else
       ErrorRepresenter.new(result.value).to_status_response
     end
   end
 
   put "/#{API_VER}/dev/:username/?" do
-    result = UpdateDeveloper.call(params[:username])
+    result = UpdateDeveloper.call(params['username'])
 
     if result.success?
       content_type 'application/json'

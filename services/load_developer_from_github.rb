@@ -50,12 +50,7 @@ class LoadDeveloperFromGithub
       if repo_monads.map(&:success?)
         Right developer
       else
-        Left(
-          Error.new(
-            :cannot_load,
-            "Developer #{developer.username} repositories could not be load"
-          )
-        )
+        repo_monads.map(&:value)
       end
     rescue
       Left(

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require_relative 'rubocop_score'
 require_relative 'flog_score'
+require_relative 'stat_representer'
 
 # Roar:Decorator for representing the developer
 class RepositoryRepresenter < Roar::Decorator

@@ -3,8 +3,7 @@
 # configure based on environment
 class DevRankAPI < Sinatra::Base
   get "/#{API_VER}/dev/:username/?" do
-  	channel_id = (headers.to_s).hash
-    puts "GET #{params[:username]}"
+  	channel_id = (headers.to_s + params.to_s).hash
     result = LoadDeveloper.call(username: params[:username], channel_id: channel_id)
     if result.success?
       ResponseRepresenter.new(result.value).to_status_response

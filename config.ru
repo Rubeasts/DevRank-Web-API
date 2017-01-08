@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+require 'faye'
 require './init.rb'
 
-require 'faye'
-use Faye::RackAdapter, :mount => '/faye', :timeout => 25
+
+use Faye::RackAdapter, :mount => '/faye', :timeout => 2000
 run DevRankAPI

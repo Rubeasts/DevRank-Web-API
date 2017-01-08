@@ -5,7 +5,6 @@ class LoadRepositoryFromGithub
   extend Dry::Container::Mixin
 
   register :check_if_repository_exist, lambda { |input|
-    puts "Load Repository from Githun #{input}"
     gh_repo = Github::Repository.find owner: input[:owner],
                                       repo: input[:repo]
     if gh_repo
@@ -17,8 +16,9 @@ class LoadRepositoryFromGithub
   }
 
   register :create_repository, lambda { |input|
-    puts "create_repository"
     gh_repo = input[:gh_repo]
+    channel_id = input[:channel_id]
+
     repository = Repository.new(
       github_id: gh_repo.id, full_name: gh_repo.full_name,
       is_private: gh_repo.is_private, created_at: gh_repo.created_at,
@@ -33,20 +33,24 @@ class LoadRepositoryFromGithub
 
     owner, _ = gh_repo.full_name.split('/')
     if(dev = Developer.find(username: owner))
-      puts "YYYAAAAA"
       repository.developer_id = dev.id
     end
 
-    Right repo: repository, gh_repo: gh_repo, channel_id: input[:channel_id]
+    DevRankAPI.publish  channel_id,
+                        "Load #{repository.full_name}"
+
+    Right repo: repository, gh_repo: gh_repo, channel_id: channel_id
   }
 
   register :add_stats_to_repo, lambda { |input|
-    puts "add_stats_to_repo"
     begin
       repo = input[:repo]
       gh_repo = input[:gh_repo]
+      channel_id = input[:channel_id]
       repo = add_stat_to_repo(repo, gh_repo.stats(stat_names: ['code_frequency','participation']))
-      Right repo: repo, channel_id: input[:channel_id]
+      DevRankAPI.publish  channel_id,
+                          "Load stat to #{repo.full_name}"
+      Right repo: repo, channel_id: channel_id
     rescue
       Left Error.new  :cannot_load,
                       "Cannot load stat to #{repo.full_name}"
@@ -71,12 +75,14 @@ class LoadRepositoryFromGithub
     repo = input[:repo]
     channel_id = input[:channel_id]
     if repo.language.to_s.include? 'Ruby'
+      DevRankAPI.publish channel_id, "Add Quality data #{repo.full_name}"
       SaveQualityDataWorker.perform_async(
         QueueMessageRepresenter.new(
           QueueMessage.new(repo.id, channel_id)
         ).to_json
       )
     end
+    DevRankAPI.publish channel_id, "Done with #{repo.full_name}"
     Right repo
   }
 

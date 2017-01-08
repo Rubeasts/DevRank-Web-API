@@ -17,12 +17,13 @@ class DevRankAPI < Sinatra::Base
   end
 
   def self.publish(channel_id, message)
-    puts "publish #{channel_id}, #{message}"
+    puts "publish #{channel_id}, #{message}, #{ENV['ROOT_URL']}"
     HTTP.headers('Content-Type' => 'application/json')
-        .post("http://localhost:9292/faye",
+        .post("#{ENV['ROOT_URL']}/faye",
               json: {
                 channel: "/#{channel_id}",
                 data: message
               })
+    puts 'published'
   end
 end

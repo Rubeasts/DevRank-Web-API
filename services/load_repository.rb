@@ -23,9 +23,22 @@ class LoadRepository
     if (github_repo = Repository.find(full_name: full_name))
       Right github_repo
     else
-      LoadRepositoryFromGithub.call owner: input[:owner],
-                                    repo: input[:repo],
-                                    channel_id: input[:channel_id]
+      DevRankAPI.publish  input[:channel_id],
+                          "Load #{input[:repo]} from Github"
+      Concurrent::Promise.execute {
+        LoadRepositoryFromGithub.call owner: input[:owner],
+                                      repo: input[:repo],
+                                      channel_id: input[:channel_id]
+      }.then { |res|
+        if res.success?
+          DevRankAPI.publish  input[:channel_id],
+                              "Completed input[:repo]"
+        else
+          DevRankAPI.publish  input[:channel_id],
+                              res.value.message
+        end
+      }
+      Right Response.new(:loading, {channel_id: input[:channel_id]}.to_json)
     end
   }
 

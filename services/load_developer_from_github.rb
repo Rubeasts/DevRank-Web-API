@@ -47,14 +47,18 @@ class LoadDeveloperFromGithub
   register :load_developer_repositories, lambda { |input|
     begin
       github_developer = input[:gh_dev]
+      channel_id = input[:channel_id]
+
       DevRankAPI.publish  channel_id,
                           "Loading repositories"
       repo_monads = github_developer.repos.map do |gh_repo|
+        puts gh_repo.full_name
         owner, repo = gh_repo.full_name.split('/')
-        LoadRepository.call owner: owner, repo: repo, channel_id: input[:channel_id]
+        LoadRepository.call owner: owner, repo: repo, channel_id: channel_id
       end
-      if repo_monads.map(&:success?)
-        Right developer
+      puts repo_monads.map(&:success?).reduce(&:&)
+      if repo_monads.map(&:success?).reduce(&:&)
+        Right input[:dev]
       else
         repo_monads.map(&:value)
       end

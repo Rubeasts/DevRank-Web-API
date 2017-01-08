@@ -41,9 +41,20 @@ class UpdateRepository
         language: github_repo.language,
         git_url: github_repo.git_url
       )
-      Right(repo)
+      Right(repo: repo, gh_repo: github_repo)
     rescue
       Left Error.new :cannot_load, 'Repository could not be updated'
+    end
+  }
+
+  register :update_repo_stat, lambda { |input|
+    begin
+      repo = input[:repo]
+      gh_repo = input[:gh_repo]
+      update_stat_repo repo.stat, gh_repo.stats(stat_names: ['code_frequency','participation'])
+      Right repo
+    rescue
+      Left Error.new :cannot_load, 'Repository stat could not be updated'
     end
   }
 
@@ -73,8 +84,16 @@ class UpdateRepository
       step :check_if_repository_is_loaded
       step :load_repository_from_github
       step :update_repository
+      step :update_repo_stat
       step :update_repo_code_quality
       step :link_repo_to_owner
     end.call(params)
+  end
+
+  def self.update_stat_repo(stat, new_stat)
+    stat.update(
+      code_frequency: new_stat[:code_frequency].to_s,
+      participation: new_stat[:participation].to_s
+    )
   end
 end

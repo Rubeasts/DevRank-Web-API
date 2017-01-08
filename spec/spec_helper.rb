@@ -22,6 +22,7 @@ REPO_CASSETTE = 'repo'
 
 VCR.configure do |c|
   c.cassette_library_dir = CASSETTES_FOLDER
+  c.ignore_hosts 'sqs.us-east-1.amazonaws.com'
   c.hook_into :webmock
 
   c.filter_sensitive_data('<AUTH>') { app.config.GH_AUTH }

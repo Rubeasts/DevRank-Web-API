@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Loads data from Facebook group to database
-class UpdateRepositoryQualityData
+# Add code quality data for ruby repository
+class AddRubyRepositoryQualityData
   extend Dry::Monads::Either::Mixin
   extend Dry::Container::Mixin
 

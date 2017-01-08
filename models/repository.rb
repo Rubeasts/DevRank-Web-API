@@ -5,4 +5,5 @@ class Repository < Sequel::Model
   many_to_one :developer
   many_to_one :flog_score
   many_to_one :rubocop_score
+  many_to_one :stat
 end

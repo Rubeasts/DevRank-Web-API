@@ -23,7 +23,9 @@ class LoadRepository
     if (github_repo = Repository.find(full_name: full_name))
       Right github_repo
     else
-      LoadRepositoryFromGithub.call input
+      LoadRepositoryFromGithub.call owner: input[:owner],
+                                    repo: input[:repo],
+                                    channel_id: input[:channel_id]
     end
   }
 

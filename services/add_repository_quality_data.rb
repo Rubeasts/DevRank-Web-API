@@ -24,7 +24,9 @@ class AddRubyRepositoryQualityData
     if quality_data.repo_path.nil?
       Left Error.new :not_found, 'Quality Data could not be found'
     else
-      Right(repo: repo, quality_data: quality_data)
+      Right repo: repo,
+            quality_data: quality_data,
+            channel_id: message[:channel_id]
     end
   }
 
@@ -37,7 +39,9 @@ class AddRubyRepositoryQualityData
       else
         repo.flog_score.update quality_data.get_flog_scores
       end
-      Right(repo: repo, quality_data: quality_data)
+      Right repo: repo,
+            quality_data: quality_data,
+            channel_id: message[:channel_id]
     rescue
       Left Error.new :cannot_load, 'Cannot save flog score'
     end
@@ -54,7 +58,9 @@ class AddRubyRepositoryQualityData
         repo.rubocop_score.update quality_data.get_rubocop_errors
       end
 
-      Right(repo: repo, quality_data: quality_data)
+      Right repo: repo,
+            quality_data: quality_data,
+            channel_id: message[:channel_id]
     rescue
       Left Error.new :cannot_load, 'Cannot save rubocop score'
     end

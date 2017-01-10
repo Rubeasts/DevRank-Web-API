@@ -4,12 +4,12 @@ require 'sequel'
 
 configure :development do
   ENV['DATABASE_URL'] = 'sqlite://db/dev.db'
-  ENV['ROOT_URL'] = 'http://localhost:9000'
+  ENV['ROOT_URL'] = 'http://localhost:9292'
 end
 
 configure :test do
   ENV['DATABASE_URL'] = 'sqlite://db/test.db'
-  ENV['ROOT_URL'] = 'http://localhost:9292'
+  ENV['ROOT_URL'] = 'http://localhost:3000'
 end
 
 configure :development, :production do

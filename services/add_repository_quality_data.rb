@@ -39,7 +39,7 @@ class AddRubyRepositoryQualityData
       end
       Right repo: repo,
             quality_data: quality_data,
-            channel_id: message[:channel_id]
+            channel_id: input[:channel_id]
     rescue
       Left Error.new :cannot_load, 'Cannot save flog score'
     end
@@ -58,7 +58,7 @@ class AddRubyRepositoryQualityData
 
       Right repo: repo,
             quality_data: quality_data,
-            channel_id: message[:channel_id]
+            channel_id: input[:channel_id]
     rescue
       Left Error.new :cannot_load, 'Cannot save rubocop score'
     end

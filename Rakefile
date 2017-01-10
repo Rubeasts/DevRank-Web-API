@@ -23,7 +23,7 @@ namespace :run do
       Rake::Task['db:_setup'].execute
       Rake::Task['db:reset'].execute
       puts 'Populating test database'
-      LoadDeveloper.call('rjollet')
+      LoadDeveloper.call(username: 'rjollet', channel_id: 'Loaddevtest'.hash)
       sh 'rerun "rackup -p 3000"'
     end
   end

@@ -12,6 +12,13 @@ class DevRankAPI < Sinatra::Base
 
   API_VER = 'api/v0.1'
 
+  set :views, File.expand_path('../../views',__FILE__)
+  set :public_dir, File.expand_path('../../public',__FILE__)
+
+  after do
+    content_type 'text/html'
+  end
+
   get '/?' do
     "RankDev latest version endpoints are at: /#{API_VER}/"
   end

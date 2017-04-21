@@ -22,6 +22,8 @@ gem 'roar'
 gem 'aws-sdk'
 gem 'shoryuken'
 
+gem 'slim'
+
 group :development, :test do
   gem 'sqlite3'
 end
